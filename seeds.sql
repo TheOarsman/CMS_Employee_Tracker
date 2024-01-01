@@ -74,12 +74,11 @@ VALUES (0001, "Chris", "Fitzgerald", "Brewing", "Brewer", 80000, "Rik Delinger")
        (0043, "Victoria", "Saunders", "Sales", "Sales Rep", 130000, "Tina Anderson"),
        (0044, "Mike", "Hamel", "Sales", "Sales Rep", 130000, "Tina Anderson"),
        (0045, "Ben", "Duffy", "Packaging", "Packaging Trainer", 110000, "Perry Dickerson"),
-       (0046, "Tim", "Lozen", "Packaging", "Packaging Trainer", 110000, "Perry Dickerson"),
+       (0046, "Tim", "Lozen", "Packaging", "Packaging QA Supervisor", 110000, "Perry Dickerson"),
        (0047, "Perry", "Dickerson", "Packaging", "Packaging Manager", 130000, "null"),
-       (0048, "Anothony", "White", "Packaging", "Packaging Trainer", 110000, "Perry Dickerson"),
+       (0048, "Anothony", "White", "Packaging", "Packaging Supervisor", 110000, "Perry Dickerson"),
        (0049, "Walker", "Modic", "Sustainability", "Sustainability Specialist", 140000, "null"),
        (0050, "Kate", "Martini", "Sustainability", "Sustainability Professional, PhD", 130000, "Walker Modic"),
        (0051, "Willow", "Cohn", "Sustainability", "Sustainability Associate", 120000, "Walker Modic"),
        (0052, "Megan", "Kaiser", "Sustainability", "Environmental Engineer", 120000, "Walker Modic");
 
-       

@@ -1,0 +1,9 @@
+DROP DATABASE IF EXISTS employees_db;
+CREATE DATABASE employees_db;
+
+USE employees_db;
+
+CREATE TABLE CURRENT_EMPLOYEES (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    employee_id VARCHAR(4) NOT NULL
+);
