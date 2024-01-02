@@ -27,12 +27,6 @@ prompts.next([
         type: "input",
         message: "What is the new amployee's first name?",
     },
-])
-    .then((answer) => {
-        console.log(answer.first_name);
-    });
-
-prompts.next([
     {
         name: "last_name",
         type: "input",
@@ -40,7 +34,7 @@ prompts.next([
     },
 ])
     .then((answer) => {
-        console.log(answer.last_name);
+        console.log(answer.first_name, answer.last_name);
     });
 
 prompts.next({
@@ -48,54 +42,56 @@ prompts.next({
     type: "list",
     message: "What is the new employee's role?",
     choices: employeeRoles,
-});
+})
+    .then((answer) => {
+        console.log(answer.employee_role);
+    });
 
 prompts.next({
     name: "employee_manager",
     type: "list",
     message: "What is the new employee's role?",
     choices: departmentManagers,
-});
+})
+    .then((answer) => {
+        console.log(answer.employee_manager);
+    });
 
 prompts.next({
     name: "new_department",
     type: "input",
     message: "What is the the new department being added?",
-});
+})
+    .then((answer) => {
+        console.log(answer.new_department);
+    });
 
 prompts.next({
     name: "new_role",
     type: "input",
     message: "What is the title of the new role being added?",
-});
+})
+    .then((answer) => {
+        console.log(answer.new_role);
+    });
 
 prompts.next({
     name: "new_salary",
-    type: "input",
+    type: "number",
     message: "What is the salary of the new role?",
-});
+})
+    .then((answer) => {
+        console.log(answer.new_salary);
+    });
 
 prompts.next({
     name: "role_deparment",
     type: "list",
     message: "What department does new role belong to?",
     choices: roleToDepartment,
-});
-
-
-inquirer
-    .prompt([
-        {
-            name: "first_name",
-            type: "input",
-            message: "What is the new amployee's first name?",
-        },
-        {
-            name: "last_name",
-            type: "input",
-            message: "What is the new amployee's last name?",
-        },
-    ])
+})
     .then((answer) => {
-        console.log("Hello", answer.first_name, answer.last_name);
+        console.log(answer.role_department);
     });
+
+prompts.complete();
