@@ -1,9 +1,24 @@
-DROP DATABASE IF EXISTS employees_db;
-CREATE DATABASE employees_db;
+DROP DATABASE IF EXISTS department_db;
+CREATE DATABASE department_db;
 
-USE employees_db;
+USE department_db;
 
-CREATE TABLE CURRENT_EMPLOYEES (
+CREATE TABLE business_departments (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    employee_id VARCHAR(4) NOT NULL
+    department_id VARCHAR(30) NOT NULL
 );
+
+CREATE TABLE 
+
+
+
+
+DROP DATABASE IF EXISTS role_db;
+CREATE DATABASE role_db;
+
+USE role_db;
+
+CREATE TABLE CURRENT_ROLES (
+    id INT NOT NULL AUTO_INCREMENT PRIMAY KEY,
+    role_db VARCHAR(30) NOT NULL
+)
