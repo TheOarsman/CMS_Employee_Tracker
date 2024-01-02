@@ -1,0 +1,16 @@
+{
+  "name": "cms_employee_tracker",
+  "version": "1.0.0",
+  "description": "putting this in so I can make a commit based on the seeds.sql edits",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^9.2.12"
+  }
+}

@@ -28,7 +28,6 @@ VALUES (0003, "Rik", "Delinger"),
        (0047, "Perry", "Dickerson"),
        (0049, "Walker", "Modic");
 
-
 INSERT INTO employees (employee_id, department_id, role_id, salary, first_name, last_name, department, role_title, reporting_manager, is_manager)
 VALUES (0001, 001, 001, 080000, "Chris", "Fitzgerald", "Brewing", "Brewer", "Rik Delinger", false),
        (0002, 001, 001, 080000, "Tom", "Bohs", "Brewing", "Brewer", "Rik Delinger", false),
