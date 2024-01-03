@@ -1,4 +1,4 @@
-INSERT INTO business_departments (department_id, department)
+INSERT INTO departments (department_id, department_name)
 VALUES (001, "Brewing"),
        (002, "Engineering"),
        (003, "Executive"),
@@ -28,7 +28,46 @@ VALUES (0003, "Rik", "Delinger"),
        (0047, "Perry", "Dickerson"),
        (0049, "Walker", "Modic");
 
-INSERT INTO employees (employee_id, department_id, role_id, salary, first_name, last_name, department, role_title, reporting_manager, is_manager)
+INSERT INTO roles (role_id, salary, department_id, role_title)
+VALUES (001, 080000, 001, "Brewer"),
+       (002, 100000, 001, "Brewing Manager"),
+       (003, 100000, 002, "Programmer"),
+       (004, 120000, 002, "Lead Engineer"),
+       (005, 090000, 006, "Innovation Brewer"),
+       (006, 110000, 006, "Innovation Manager"),
+       (007, 070000, 004, "Cellarman"),
+       (008, 090000, 004, "Cellar Manager"),
+       (009, 200000, 005, "Director of HR"),
+       (010, 110000, 005, "Training Specialist"),
+       (011, 110000, 005, "Recruiter"),
+       (012, 130000, 005, "Sr. HR Business Partner"),
+       (013, 130000, 007, "IT Manager"),
+       (014, 110000, 007, "Enterprise Applications"),
+       (015, 110000, 007, "IT Specialist"),
+       (016, 120000, 008, "Lab Technician"),
+       (017, 150000, 008, "Quality Manager"),
+       (018, 100000, 009, "Logistics Manager"),
+       (019, 090000, 009, "Logistics AX Coordinator"),
+       (020, 080000, 009, "Logistics Operator"),
+       (021, 150000, 010, "Maintenance Manager"),
+       (022, 130000, 010, "Parts Coordinator"),
+       (023, 120000, 010, "Maintenance Technician"),
+       (024, 200000, 003, "Director of Operations"),
+       (025, 150000, 003, "Production Manager"),
+       (026, 150000, 003, "Logistics Director"),
+       (027, 150000, 003, "Brewmaster"),
+       (028, 150000, 012, "Sales Manager"),
+       (029, 130000, 012, "Sales Rep"),
+       (030, 110000, 011, "Packaging Trainer"),
+       (031, 110000, 011, "Packaging QA Supervisor"),
+       (032, 130000, 011, "Packaging Manager"),
+       (033, 110000, 011, "Packaging Supervisor"),
+       (034, 140000, 013, "Sustainability Specialist"),
+       (035, 130000, 013, "Sustainability Professional, PhD"),
+       (036, 120000, 013, "Sustainability Associate"),
+       (037, 120000, 013, "Environmental Engineer");
+
+INSERT INTO employees (employee_id, department_id, role_id, salary, first_name, last_name, department_name, role_title, reporting_manager, is_manager)
 VALUES (0001, 001, 001, 080000, "Chris", "Fitzgerald", "Brewing", "Brewer", "Rik Delinger", false),
        (0002, 001, 001, 080000, "Tom", "Bohs", "Brewing", "Brewer", "Rik Delinger", false),
        (0003, 001, 002, 100000, "Rik", "Delinger", "Brewing", "Brewing Manager", "null", true),
