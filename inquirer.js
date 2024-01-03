@@ -1,6 +1,12 @@
 const inquirer = require("inquirer")
+const mysql = require('mysql2')
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    database: 'employee_db'
+  });
 
-const whereToStart = ["View All Employee", "Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "View All Managers", "Add Manager", "Quit"];
+const whereToStart = ["View All Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add A Role", "View All Departments", "Add Department", "View All Managers", "Add Manager", "Quit"];
 
 const roleToDepartment = ["Brewing", "Engineering", "Executive", "Fermentation", "Human Resources", "Innovation", "IT", "Lab", "Logistics", "Maintenance", "Packaging", "Sales", "Sustainability"];
 
@@ -8,7 +14,8 @@ const employeeRoles = ["Brewer", "Brewing Manager", "Programmer", "Lead Engineer
 
 const departmentManagers = ["Rik Delinger", "Chris Donalds", "Louwrens Wildschut", "Stephen Kimble", "Carrie Overton", "Pat Rolfe", "Loren Torrez", "Mike Simon", "Dan Houston", "John Mallet", "Tina Anderson", "Perry Dickerson", "Walker Modic"];
 
-inquirer
+function start(){
+    inquirer
     .prompt([
         {
             name: "getting_started",
@@ -19,79 +26,110 @@ inquirer
     ])
     .then((answer) => {
         console.log(answer.getting_started);
+        switch (answer.getting_started) {
+            case "View All Departments":
+                viewDepartments()
+                break;
+            case "View All Employees":
+                viewEmplyees()
+                break;
+            // case "View All Departments":
+            //     viewDepartments()
+            //     break;
+            // case "View All Departments":
+            //     viewDepartments()
+            //     break;
+            // case "View All Departments":
+            //     viewDepartments()
+            //     break;
+        
+            default:
+                break;
+        }
     });
+}
 
-prompts.next([
-    {
-        name: "first_name",
-        type: "input",
-        message: "What is the new amployee's first name?",
-    },
-    {
-        name: "last_name",
-        type: "input",
-        message: "What is the new amployee's last name?",
-    },
-])
-    .then((answer) => {
-        console.log(answer.first_name, answer.last_name);
-    });
+function viewDepartments (){
+    connection.query(`select * from departments`,(err, results)=>{
+        console.table(results)
+        start()
+    })
+}
 
-prompts.next({
-    name: "employee_role",
-    type: "list",
-    message: "What is the new employee's role?",
-    choices: employeeRoles,
-})
-    .then((answer) => {
-        console.log(answer.employee_role);
-    });
 
-prompts.next({
-    name: "employee_manager",
-    type: "list",
-    message: "What is the new employee's role?",
-    choices: departmentManagers,
-})
-    .then((answer) => {
-        console.log(answer.employee_manager);
-    });
 
-prompts.next({
-    name: "new_department",
-    type: "input",
-    message: "What is the the new department being added?",
-})
-    .then((answer) => {
-        console.log(answer.new_department);
-    });
+// prompts.next([
+//     {
+//         name: "first_name",
+//         type: "input",
+//         message: "What is the new amployee's first name?",
+//     },
+//     {
+//         name: "last_name",
+//         type: "input",
+//         message: "What is the new amployee's last name?",
+//     },
+// ])
+//     .then((answer) => {
+//         console.log(answer.first_name, answer.last_name);
+//     });
 
-prompts.next({
-    name: "new_role",
-    type: "input",
-    message: "What is the title of the new role being added?",
-})
-    .then((answer) => {
-        console.log(answer.new_role);
-    });
+// prompts.next({
+//     name: "employee_role",
+//     type: "list",
+//     message: "What is the new employee's role?",
+//     choices: employeeRoles,
+// })
+//     .then((answer) => {
+//         console.log(answer.employee_role);
+//     });
 
-prompts.next({
-    name: "new_salary",
-    type: "number",
-    message: "What is the salary of the new role?",
-})
-    .then((answer) => {
-        console.log(answer.new_salary);
-    });
+// prompts.next({
+//     name: "employee_manager",
+//     type: "list",
+//     message: "What is the new employee's role?",
+//     choices: departmentManagers,
+// })
+//     .then((answer) => {
+//         console.log(answer.employee_manager);
+//     });
 
-prompts.next({
-    name: "role_deparment",
-    type: "list",
-    message: "What department does new role belong to?",
-    choices: roleToDepartment,
-})
-    .then((answer) => {
-        console.log(answer.role_department);
-    });
+// prompts.next({
+//     name: "new_department",
+//     type: "input",
+//     message: "What is the the new department being added?",
+// })
+//     .then((answer) => {
+//         console.log(answer.new_department);
+//     });
 
-prompts.complete();
+// prompts.next({
+//     name: "new_role",
+//     type: "input",
+//     message: "What is the title of the new role being added?",
+// })
+//     .then((answer) => {
+//         console.log(answer.new_role);
+//     });
+
+// prompts.next({
+//     name: "new_salary",
+//     type: "number",
+//     message: "What is the salary of the new role?",
+// })
+//     .then((answer) => {
+//         console.log(answer.new_salary);
+//     });
+
+// prompts.next({
+//     name: "role_deparment",
+//     type: "list",
+//     message: "What department does new role belong to?",
+//     choices: roleToDepartment,
+// })
+//     .then((answer) => {
+//         console.log(answer.role_department);
+//     });
+
+// prompts.complete();
+start()
