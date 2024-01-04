@@ -97,38 +97,96 @@ function viewEmplyees() {
 
 // Function to add a role to the list of roles
 
-function addRole() {
-    connection.query(`select * from roles`, (err, results) => {
-        if (err) throw (err);
-    inquirer
-        .prompt([{
-            name: "role_title",
-            type: "input",
-            message: "What is the title of the new role?",
-          }, 
-          {
-            name: "salary",
-            type: "input",
-            message: "What is the salary of the new role?",
-          },
-          {
-            name: "department_name",
-            type: "list",
-            message: "Which department does this role fall under?",
-            choices: function() {
-                var choicesArray = [];
-                res.forEach(res => {
-                    choicesArray.push(
-                        res.name
-                    );
-                })
-                return choicesArray;
-              }
-          }
-          ])
-        start()
-    })
+async function addEmployee() {
+    const addname = await inquirer.prompt(askName());
+    connection.query('SELECT role.id, role.title FROM role ORDER BY role.id;', async (err, res) => {
+        if (err) throw err;
+        const { role } = await inquirer.prompt([
+            {
+                name: 'role',
+                type: 'list',
+                choices: () => res.map(res => res.title),
+                message: 'What is the employee role?: '
+            }
+        ]);
+        let roleId;
+        for (const row of res) {
+            if (row.title === role) {
+                roleId = row.id;
+                continue;
+            }
+        }
+        connection.query('SELECT * FROM employee', async (err, res) => {
+            if (err) throw err;
+            let choices = res.map(res => `${res.first_name} ${res.last_name}`);
+            choices.push('none');
+            let { manager } = await inquirer.prompt([
+                {
+                    name: 'manager',
+                    type: 'list',
+                    choices: choices,
+                    message: 'Choose the employee Manager: '
+                }
+            ]);
+            let managerId;
+            let managerName;
+            if (manager === 'none') {
+                managerId = null;
+            } else {
+                for (const data of res) {
+                    data.fullName = `${data.first_name} ${data.last_name}`;
+                    if (data.fullName === manager) {
+                        managerId = data.id;
+                        managerName = data.fullName;
+                        console.log(managerId);
+                        console.log(managerName);
+                        continue;
+                    }
+                }
+            }
+
+            connection.query(
+                'INSERT INTO employee SET ?',
+                {
+                    first_name: addname.first,
+                    last_name: addname.last,
+                    role_id: roleId,
+                    manager_id: parseInt(managerId)
+                },
+                (err, res) => {
+                    if (err) throw err;
+                    console.log('Employee has been added. Please view all employee to verify...');    
+                    prompt();
+
+                }
+            );
+            
+        });
+    });
+
 }
+function remove(input) {
+    const promptQ = {
+        yes: "yes",
+        no: "no I don't (view all employees on the main option)"
+    };
+    inquirer.prompt([
+        {
+            name: "action",
+            type: "list",
+            message: "In order to proceed an employee, an ID must be entered. View all employees to get" +
+                " the employee ID. Do you know the employee ID?",
+            choices: [promptQ.yes, promptQ.no]
+        }
+    ]).then(answer => {
+        if (input === 'delete' && answer.action === "yes") removeEmployee();
+        else if (input === 'role' && answer.action === "yes") updateRole();
+        else viewAllEmployees();
+
+        start()
+    });
+};
+
 
 
 // Function to add a new department to the list of all departments
