@@ -6,7 +6,8 @@ const connection = mysql.createConnection({
     database: 'employee_db'
 });
 
-const whereToStart = ["View All Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add A Role", "View All Departments", "Add Department", "Quit"];
+// List of answers for first prompt
+const whereToStart = ["View All Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "Quit"];
 
 const roleToDepartment = ["Brewing", "Engineering", "Executive", "Fermentation", "Human Resources", "Innovation", "IT", "Lab", "Logistics", "Maintenance", "Packaging", "Sales", "Sustainability"];
 
@@ -14,6 +15,7 @@ const employeeRoles = ["Brewer", "Brewing Manager", "Programmer", "Lead Engineer
 
 const departmentManagers = ["Rik Delinger", "Chris Donalds", "Louwrens Wildschut", "Stephen Kimble", "Carrie Overton", "Pat Rolfe", "Loren Torrez", "Mike Simon", "Dan Houston", "John Mallet", "Tina Anderson", "Perry Dickerson", "Walker Modic"];
 
+// Starting Prompt, asking what user would like to do
 function start() {
     inquirer
         .prompt([
@@ -36,12 +38,21 @@ function start() {
                 case "View All Employees":
                     viewEmplyees()
                     break;
-                // case "View All Departments":
-                //     viewDepartments()
-                //     break;
-                // case "View All Departments":
-                //     viewDepartments()
-                //     break;
+                case "Add Employee":
+                    addEmployee()
+                    break;
+                case "Add Role":
+                    addRole()
+                    break;
+                case "Add Department":
+                    addDepartment()
+                    break;
+                case "Update Employee Role":
+                    updateEmployeeRole()
+                    break;
+                case "Quit":
+                    quitProgram()
+                    break;
 
                 default:
                     break;
@@ -49,6 +60,7 @@ function start() {
         });
 }
 
+// Function to see list of all departments
 function viewDepartments() {
     connection.query(`select * from departments`, (err, results) => {
         console.table(results)
@@ -56,6 +68,7 @@ function viewDepartments() {
     })
 }
 
+// Function to see list of all roles
 function viewRoles() {
     connection.query(`select * from roles`, (err, results) => {
         console.table(results)
@@ -63,12 +76,93 @@ function viewRoles() {
     })
 }
 
+// Function to see list of all employees
 function viewEmplyees() {
     connection.query(`select * from employees`, (err, results) => {
         console.table(results)
         start()
     })
 }
+
+
+// Function to an an employee to the list of employees
+
+// function addEmploye() {
+//     connection.query(`select * from employees`, (err, results) => {
+//         console.table(results)
+//         start()
+//     })
+// }
+
+
+// Function to add a role to the list of roles
+
+function addRole() {
+    connection.query(`select * from roles`, (err, results) => {
+        if (err) throw (err);
+    inquirer
+        .prompt([{
+            name: "role_title",
+            type: "input",
+            message: "What is the title of the new role?",
+          }, 
+          {
+            name: "salary",
+            type: "input",
+            message: "What is the salary of the new role?",
+          },
+          {
+            name: "department_name",
+            type: "list",
+            message: "Which department does this role fall under?",
+            choices: function() {
+                var choicesArray = [];
+                res.forEach(res => {
+                    choicesArray.push(
+                        res.name
+                    );
+                })
+                return choicesArray;
+              }
+          }
+          ])
+        start()
+    })
+}
+
+
+// Function to add a new department to the list of all departments
+
+// function addDepartment() {
+//     connection.query(`select * from employees`, (err, results) => {
+//         console.table(results)
+//         start()
+//     })
+// }
+
+
+// Function to update an Employee's role to the list of roles
+
+function updateEmployeeRole() {
+    connection.query(`select * from employees`, (err, results) => {
+        console.table(results)
+        start()
+    })
+}
+
+
+// Function to quit running the program
+
+// function quitProgram() {
+//     connection.query(`select * from employees`, (err, results) => {
+//         console.table(results)
+//         start()
+//     })
+// }
+
+
+
+
 
 // prompts.next([
 //     {
