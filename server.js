@@ -3,11 +3,12 @@ const mysql = require('mysql2')
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    database: 'employee_db'
+    password: '',
+    database: 'employee_db',
 });
 
 // List of answers for first prompt
-const whereToStart = ["View All Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "Quit"];
+const whereToStart = ["View All Employees", "View All Departments", "View All Roles", "Update Employee Role", "Add Employee", "Add Role", "Add Department", "Quit"];
 
 const roleToDepartment = ["Brewing", "Engineering", "Executive", "Fermentation", "Human Resources", "Innovation", "IT", "Lab", "Logistics", "Maintenance", "Packaging", "Sales", "Sustainability"];
 
@@ -36,7 +37,7 @@ function start() {
                     viewRoles()
                     break;
                 case "View All Employees":
-                    viewEmplyees()
+                    viewEmployees()
                     break;
                 case "Add Employee":
                     addEmployee()
@@ -62,7 +63,7 @@ function start() {
 
 // Function to see list of all departments
 function viewDepartments() {
-    connection.query(`select * from departments`, (err, results) => {
+    connection.query(`SELECT * FROM departments`, (err, results) => {
         console.table(results)
         start()
     })
@@ -70,15 +71,15 @@ function viewDepartments() {
 
 // Function to see list of all roles
 function viewRoles() {
-    connection.query(`select * from roles`, (err, results) => {
+    connection.query(`SELECT * FROM roles`, (err, results) => {
         console.table(results)
         start()
     })
 }
 
 // Function to see list of all employees
-function viewEmplyees() {
-    connection.query(`select * from employees`, (err, results) => {
+function viewEmployees() {
+    connection.query(`SELECT * FROM employees`, (err, results) => {
         console.table(results)
         start()
     })
@@ -194,12 +195,12 @@ async function addEmployee() {
 
 // Function to update an Employee's role to the list of roles
 
-function updateEmployeeRole() {
-    connection.query(`select * from employees`, (err, results) => {
-        console.table(results)
-        start()
-    })
-}
+// function updateEmployeeRole() {
+//     connection.query(`select * from employees`, (err, results) => {
+//         console.table(results)
+//         start()
+//     })
+// }
 
 
 // Function to quit running the program

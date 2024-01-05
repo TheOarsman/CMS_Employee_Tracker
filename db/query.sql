@@ -21,7 +21,7 @@ d.department_name,
 c.salary,
 b.first_name AS manager_firstname,
 b.last_name AS manager_lastname
-FROM employee a
+FROM employees
 LEFT JOIN employee b ON a.manager_id = b.id
 INNER JOIN roles c ON a.role_id = c.id
 INNER JOIN department d ON d.id = c.department_id;
