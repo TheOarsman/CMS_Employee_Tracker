@@ -98,25 +98,25 @@ function viewEmplyees() {
 // Function to add a role to the list of roles
 
 async function addEmployee() {
-    const addname = await inquirer.prompt(askName());
-    connection.query('SELECT role.id, role.title FROM role ORDER BY role.id;', async (err, res) => {
+    const addname = await inquirer.prompt(newName());
+    connection.query('SELECT role.id, role.role_title FROM role ORDER BY role.id;', async (err, res) => {
         if (err) throw err;
         const { role } = await inquirer.prompt([
             {
                 name: 'role',
                 type: 'list',
-                choices: () => res.map(res => res.title),
-                message: 'What is the employee role?: '
+                choices: () => res.map(res => res.role_title),
+                message: "What is the employee's role?"
             }
         ]);
         let roleId;
         for (const row of res) {
-            if (row.title === role) {
+            if (row.role_title === role) {
                 roleId = row.id;
                 continue;
             }
         }
-        connection.query('SELECT * FROM employee', async (err, res) => {
+        connection.query('select * from employees', async (err, res) => {
             if (err) throw err;
             let choices = res.map(res => `${res.first_name} ${res.last_name}`);
             choices.push('none');
@@ -125,7 +125,7 @@ async function addEmployee() {
                     name: 'manager',
                     type: 'list',
                     choices: choices,
-                    message: 'Choose the employee Manager: '
+                    message: "Who is this employee's manager?"
                 }
             ]);
             let managerId;
@@ -270,7 +270,7 @@ function updateEmployeeRole() {
 // prompts.next({
 //     name: "new_role",
 //     type: "input",
-//     message: "What is the title of the new role being added?",
+//     message: "What is the role_title of the new role being added?",
 // })
 //     .then((answer) => {
 //         console.log(answer.new_role);
@@ -296,4 +296,26 @@ function updateEmployeeRole() {
 //     });
 
 // prompts.complete();
+
+
+
+
+
+// Function to ask for employee name when adding a new employee to the employee list
+
+function newName() {
+    return ([
+        {
+            name: "firstName",
+            type: "input",
+            message: "Enter new employee's first name"
+        },
+        {
+            name: "lastName",
+            type: "input",
+            message: "Enter new employee's last name"
+        }
+    ]);
+}
+
 start()
