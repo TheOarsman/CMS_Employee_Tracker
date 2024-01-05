@@ -41,18 +41,18 @@ function start() {
                 case "Add Employee":
                     addEmployee()
                     break;
-                case "Add Role":
-                    addRole()
-                    break;
-                case "Add Department":
-                    addDepartment()
-                    break;
-                case "Update Employee Role":
-                    updateEmployeeRole()
-                    break;
-                case "Quit":
-                    quitProgram()
-                    break;
+                // case "Add Role":
+                //     addRole()
+                //     break;
+                // case "Add Department":
+                //     addDepartment()
+                //     break;
+                // case "Update Employee Role":
+                //     updateEmployeeRole()
+                //     break;
+                // case "Quit":
+                //     quitProgram()
+                //     break;
 
                 default:
                     break;
@@ -84,18 +84,7 @@ function viewEmplyees() {
     })
 }
 
-
 // Function to an an employee to the list of employees
-
-// function addEmploye() {
-//     connection.query(`select * from employees`, (err, results) => {
-//         console.table(results)
-//         start()
-//     })
-// }
-
-
-// Function to add a role to the list of roles
 
 async function addEmployee() {
     const addname = await inquirer.prompt(newName());
@@ -128,17 +117,17 @@ async function addEmployee() {
                     message: "Who is this employee's manager?"
                 }
             ]);
-            let managerId;
+            let manager_Id;
             let managerName;
             if (manager === 'none') {
-                managerId = null;
+                manager_Id = null;
             } else {
                 for (const data of res) {
                     data.fullName = `${data.first_name} ${data.last_name}`;
                     if (data.fullName === manager) {
-                        managerId = data.id;
+                        manager_Id = data.id;
                         managerName = data.fullName;
-                        console.log(managerId);
+                        console.log(manager_Id);
                         console.log(managerName);
                         continue;
                     }
@@ -151,7 +140,7 @@ async function addEmployee() {
                     first_name: addname.first,
                     last_name: addname.last,
                     role_id: roleId,
-                    manager_id: parseInt(managerId)
+                    manager_id: parseInt(manager_Id)
                 },
                 (err, res) => {
                     if (err) throw err;
@@ -165,27 +154,31 @@ async function addEmployee() {
     });
 
 }
-function remove(input) {
-    const promptQ = {
-        yes: "yes",
-        no: "no I don't (view all employees on the main option)"
-    };
-    inquirer.prompt([
-        {
-            name: "action",
-            type: "list",
-            message: "In order to proceed an employee, an ID must be entered. View all employees to get" +
-                " the employee ID. Do you know the employee ID?",
-            choices: [promptQ.yes, promptQ.no]
-        }
-    ]).then(answer => {
-        if (input === 'delete' && answer.action === "yes") removeEmployee();
-        else if (input === 'role' && answer.action === "yes") updateRole();
-        else viewAllEmployees();
 
-        start()
-    });
-};
+
+
+// Function to add a role to the list of roles
+
+// function remove(input) {
+//     const promptQ = {
+//         yes: "yes",
+//         no: "no I don't (view all employees on the main option)"
+//     };
+//     inquirer.prompt([
+//         {
+//             name: "action",
+//             type: "list",
+//             message: "In order to proceed an employee, an ID must be entered. View all employees to get the employee ID. Do you know the employee ID?",
+//             choices: [promptQ.yes, promptQ.no]
+//         }
+//     ]).then(answer => {
+//         if (input === 'delete' && answer.action === "yes") removeEmployee();
+//         else if (input === 'role' && answer.action === "yes") updateRole();
+//         else viewAllEmployees();
+
+//         start()
+//     });
+// };
 
 
 
@@ -217,85 +210,6 @@ function updateEmployeeRole() {
 //         start()
 //     })
 // }
-
-
-
-
-
-// prompts.next([
-//     {
-//         name: "first_name",
-//         type: "input",
-//         message: "What is the new amployee's first name?",
-//     },
-//     {
-//         name: "last_name",
-//         type: "input",
-//         message: "What is the new amployee's last name?",
-//     },
-// ])
-//     .then((answer) => {
-//         console.log(answer.first_name, answer.last_name);
-//     });
-
-// prompts.next({
-//     name: "employee_role",
-//     type: "list",
-//     message: "What is the new employee's role?",
-//     choices: employeeRoles,
-// })
-//     .then((answer) => {
-//         console.log(answer.employee_role);
-//     });
-
-// prompts.next({
-//     name: "employee_manager",
-//     type: "list",
-//     message: "What is the new employee's role?",
-//     choices: departmentManagers,
-// })
-//     .then((answer) => {
-//         console.log(answer.employee_manager);
-//     });
-
-// prompts.next({
-//     name: "new_department",
-//     type: "input",
-//     message: "What is the the new department being added?",
-// })
-//     .then((answer) => {
-//         console.log(answer.new_department);
-//     });
-
-// prompts.next({
-//     name: "new_role",
-//     type: "input",
-//     message: "What is the role_title of the new role being added?",
-// })
-//     .then((answer) => {
-//         console.log(answer.new_role);
-//     });
-
-// prompts.next({
-//     name: "new_salary",
-//     type: "number",
-//     message: "What is the salary of the new role?",
-// })
-//     .then((answer) => {
-//         console.log(answer.new_salary);
-//     });
-
-// prompts.next({
-//     name: "role_deparment",
-//     type: "list",
-//     message: "What department does new role belong to?",
-//     choices: roleToDepartment,
-// })
-//     .then((answer) => {
-//         console.log(answer.role_department);
-//     });
-
-// prompts.complete();
 
 
 
