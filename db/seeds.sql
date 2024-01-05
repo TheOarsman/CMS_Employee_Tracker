@@ -1,3 +1,7 @@
+USE employee_db;
+
+SOURCE schema.sql;
+
 INSERT INTO departments (department_name)
 VALUES ("Brewing"),
        ("Engineering"),
@@ -58,7 +62,7 @@ VALUES (002, "Rik", "Delinger", null),
        (001, "Chris", "Fitzgerald", 1),
        (001, "Jake", "Mahoney", 1),
        (004, "Chris", "Donalds", null),
-       (003, "Mike", "Strazdas", , 5),
+       (003, "Mike", "Strazdas", 5),
        (003, "Nathan", "Schroder", 5),
        (003, "Andrew", "Koehring", 5),
        (006, "Louwrens", "Wildschut", null),
