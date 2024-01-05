@@ -1,7 +1,5 @@
 USE employee_db;
 
-SOURCE schema.sql;
-
 INSERT INTO departments (department_name)
 VALUES ("Brewing"),
        ("Engineering"),
