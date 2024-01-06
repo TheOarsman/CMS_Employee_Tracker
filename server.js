@@ -10,11 +10,18 @@ const connection = mysql.createConnection({
 // List of answers for first prompt
 const whereToStart = ["View All Employees", "View All Departments", "View All Roles", "Update Employee Role", "Add Employee", "Add Role", "Add Department", "Quit"];
 
-const roleToDepartment = ["Brewing", "Engineering", "Executive", "Fermentation", "Human Resources", "Innovation", "IT", "Lab", "Logistics", "Maintenance", "Packaging", "Sales", "Sustainability"];
 
-const employeeRoles = ["Brewer", "Brewing Manager", "Programmer", "Lead Engineer", "Innovation Brewer", "Innovation Manager", "Cellarman", "Cellar Manager", "Director of HR", "Training Specialist", "Recruiter", "Sr. HR Business Partner", "IT Manager", "Enterprise Applications", "IT Specialist", "Lab Technician", "Quality Manager", "Logistics Manager", "Logistics AX Coordinator", "Logistics Operator", "Maintenance Manager", "Parts Coordinator", "Maintenance Technician", "Director of Operations", "Production Manager", "Logistics Director", "Brewmaster", "Sales Manager", "Sales Rep", "Packaging Trainer", "Packaging QA Supervisor", "Packaging Manager", "Packaging Supervisor", "Sustainability Specialist", "Sustainability Professional, PhD", "Sustainability Associate", "Environmental Engineer"];
 
-const departmentManagers = ["Rik Delinger", "Chris Donalds", "Louwrens Wildschut", "Stephen Kimble", "Carrie Overton", "Pat Rolfe", "Loren Torrez", "Mike Simon", "Dan Houston", "John Mallet", "Tina Anderson", "Perry Dickerson", "Walker Modic"];
+//Currently Don't Need - Keep until done with project then delete - 
+// const roleToDepartment = ["Brewing", "Engineering", "Executive", "Fermentation", "Human Resources", "Innovation", "IT", "Lab", "Logistics", "Maintenance", "Packaging", "Sales", "Sustainability"];
+
+//Currently Don't Need - Keep until done with project then delete - 
+// const employeeRoles = ["Brewer", "Brewing Manager", "Programmer", "Lead Engineer", "Innovation Brewer", "Innovation Manager", "Cellarman", "Cellar Manager", "Director of HR", "Training Specialist", "Recruiter", "Sr. HR Business Partner", "IT Manager", "Enterprise Applications", "IT Specialist", "Lab Technician", "Quality Manager", "Logistics Manager", "Logistics AX Coordinator", "Logistics Operator", "Maintenance Manager", "Parts Coordinator", "Maintenance Technician", "Director of Operations", "Production Manager", "Logistics Director", "Brewmaster", "Sales Manager", "Sales Rep", "Packaging Trainer", "Packaging QA Supervisor", "Packaging Manager", "Packaging Supervisor", "Sustainability Specialist", "Sustainability Professional, PhD", "Sustainability Associate", "Environmental Engineer"];
+
+//Currently Don't Need - Keep until done with project then delete - 
+// const departmentManagers = ["Rik Delinger", "Chris Donalds", "Louwrens Wildschut", "Stephen Kimble", "Carrie Overton", "Pat Rolfe", "Loren Torrez", "Mike Simon", "Dan Houston", "John Mallet", "Tina Anderson", "Perry Dickerson", "Walker Modic"];
+
+
 
 // Starting Prompt, asking what user would like to do
 function start() {
