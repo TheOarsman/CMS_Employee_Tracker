@@ -22,7 +22,7 @@ c.salary,
 b.first_name AS manager_firstname,
 b.last_name AS manager_lastname
 FROM employees
-LEFT JOIN employee b ON a.manager_id = b.id
+LEFT JOIN employees b ON a.manager_id = b.id
 INNER JOIN roles c ON a.role_id = c.id
 INNER JOIN department d ON d.id = c.department_id;
 
@@ -37,8 +37,8 @@ a.last_name,
 c.role_title,
 d.department_name,
 c.salary
-FROM employee a
-LEFT JOIN employee b ON a.manager_id = b.id
+FROM employees a
+LEFT JOIN employees b ON a.manager_id = b.id
 INNER JOIN roles c ON a.role_id = c.id
 INNER JOIN department d ON d.id = c.department_id
 WHERE b.first_name = "John" AND b.last_name = "Doe";
@@ -47,8 +47,8 @@ WHERE b.first_name = "John" AND b.last_name = "Doe";
 
 SELECT 
 concat(b.first_name, " ", b.last_name) AS manager_name
-FROM employee a
-LEFT JOIN employee b ON a.manager_id = b.id
+FROM employees a
+LEFT JOIN employees b ON a.manager_id = b.id
 INNER JOIN roles c ON a.role_id = c.id
 INNER JOIN department d ON d.id = c.department_id
 WHERE b.first_name IS NOT NULL AND b.last_name IS NOT NULL;
@@ -64,15 +64,15 @@ d.department_name,
 c.salary,
 b.first_name AS manager_firstname,
 b.last_name AS manager_lastname
-FROM employee a
-LEFT JOIN employee b ON a.manager_id = b.id
+FROM employees a
+LEFT JOIN employees b ON a.manager_id = b.id
 INNER JOIN roles c ON a.role_id = c.id
 INNER JOIN department d ON d.id = c.department_id
 WHERE d.department_name = "Sales";
 
 /* Add department */
 
-INSERT INTO department (department_name)
+INSERT INTO departments (department_name)
 VALUES ("Talent");
 
 /* Add a role */
@@ -82,20 +82,20 @@ VALUES ("Talent Executive", 75000, 5);
 
 /* Add an employee */
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
+INSERT INTO employees (first_name, last_name, role_id, manager_id)
 VALUES ("Sarah", "Lam", 4, 3);
 
 /* Update an employee role */
 
-UPDATE employee SET role_id = 1
-WHERE employee.first_name = "Mike" AND employee.last_name = "Chan";
+UPDATE employees SET role_id = 1
+WHERE employees.first_name = "Mike" AND employees.last_name = "Chan";
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("Jennifer", "Sam", (SELECT id FROM (SELECT r.id FROM roles r WHERE r.role_title = "Sales Associate") sub), (SELECT id FROM (SELECT e.id FROM employee e WHERE e.first_name = "John" AND e.last_name = "Doe") sub));
+INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ("Jennifer", "Sam", (SELECT id FROM (SELECT r.id FROM roles r WHERE r.role_title = "Sales Associate") sub), (SELECT id FROM (SELECT e.id FROM employees e WHERE e.first_name = "John" AND e.last_name = "Doe") sub));
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("Anna", "Lu", (SELECT r.id FROM roles r WHERE r.role_title = "Sales Lead"), (SELECT e.id FROM employee e WHERE e.first_name = "Ashley" AND e.last_name = "Rodriguez"));
+INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ("Anna", "Lu", (SELECT r.id FROM roles r WHERE r.role_title = "Sales Lead"), (SELECT e.id FROM employees e WHERE e.first_name = "Ashley" AND e.last_name = "Rodriguez"));
 
-UPDATE employee SET manager_id = (SELECT a.id FROM (SELECT b.id FROM employee b WHERE b.first_name = "Jennifer" AND b.last_name = "Sam") a) WHERE first_name = "Tom" AND last_name = "Allen";
+UPDATE employees SET manager_id = (SELECT a.id FROM (SELECT b.id FROM employee b WHERE b.first_name = "Jennifer" AND b.last_name = "Sam") a) WHERE first_name = "Tom" AND last_name = "Allen";
 
 /* DELETING SPECIFIC VALUES */
 
-DELETE FROM department WHERE department_name = "Legal";
+DELETE FROM departments WHERE department_name = "Legal";
