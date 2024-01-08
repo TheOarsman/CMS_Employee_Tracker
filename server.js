@@ -10,19 +10,6 @@ const connection = mysql.createConnection({
 // List of answers for first prompt
 const whereToStart = ["View All Employees", "View All Departments", "View All Roles", "Update Employee Role", "Add Employee", "Add Role", "Add Department", "Quit"];
 
-
-
-//Currently Don't Need - Keep until done with project then delete - 
-// const roleToDepartment = ["Brewing", "Engineering", "Executive", "Fermentation", "Human Resources", "Innovation", "IT", "Lab", "Logistics", "Maintenance", "Packaging", "Sales", "Sustainability"];
-
-//Currently Don't Need - Keep until done with project then delete - 
-// const employeeRoles = ["Brewer", "Brewing Manager", "Programmer", "Lead Engineer", "Innovation Brewer", "Innovation Manager", "Cellarman", "Cellar Manager", "Director of HR", "Training Specialist", "Recruiter", "Sr. HR Business Partner", "IT Manager", "Enterprise Applications", "IT Specialist", "Lab Technician", "Quality Manager", "Logistics Manager", "Logistics AX Coordinator", "Logistics Operator", "Maintenance Manager", "Parts Coordinator", "Maintenance Technician", "Director of Operations", "Production Manager", "Logistics Director", "Brewmaster", "Sales Manager", "Sales Rep", "Packaging Trainer", "Packaging QA Supervisor", "Packaging Manager", "Packaging Supervisor", "Sustainability Specialist", "Sustainability Professional, PhD", "Sustainability Associate", "Environmental Engineer"];
-
-//Currently Don't Need - Keep until done with project then delete - 
-// const departmentManagers = ["Rik Delinger", "Chris Donalds", "Louwrens Wildschut", "Stephen Kimble", "Carrie Overton", "Pat Rolfe", "Loren Torrez", "Mike Simon", "Dan Houston", "John Mallet", "Tina Anderson", "Perry Dickerson", "Walker Modic"];
-
-
-
 // Starting Prompt, asking what user would like to do
 function start() {
     inquirer
@@ -49,9 +36,9 @@ function start() {
                 case "Add Employee":
                     addEmployee()
                     break;
-                // case "Add Role":
-                //     addRole()
-                //     break;
+                case "Add Role":
+                    addRole()
+                    break;
                 // case "Add Department":
                 //     addDepartment()
                 //     break;
@@ -70,7 +57,7 @@ function start() {
 
 // Function to see list of all departments
 function viewDepartments() {
-    connection.query(`SELECT * FROM departments`, (err, results) => {
+    connection.query(`SELECT * FROM departments`, (_err, results) => {
         console.table(results)
         start()
     })
@@ -78,7 +65,7 @@ function viewDepartments() {
 
 // Function to see list of all roles
 function viewRoles() {
-    connection.query(`SELECT * FROM roles`, (err, results) => {
+    connection.query(`SELECT * FROM roles`, (_err, results) => {
         console.table(results)
         start()
     })
@@ -86,7 +73,7 @@ function viewRoles() {
 
 // Function to see list of all employees
 function viewEmployees() {
-    connection.query(`SELECT * FROM employees`, (err, results) => {
+    connection.query(`SELECT * FROM employees`, (_err, results) => {
         console.table(results)
         start()
     })
@@ -127,8 +114,8 @@ async function addEmployee() {
             ]);
             let manager_Id;
             let managerName;
-            if (manager === 'none') {
-                manager_Id = null;
+            if (manager === null) {
+                manager_Id = 'none';
             } else {
                 for (const data of res) {
                     data.fullName = `${data.first_name} ${data.last_name}`;
@@ -148,36 +135,38 @@ async function addEmployee() {
                     last_name: addname.lastName,
                     role_id: roleId,
                 }
-                
+
             );
         });
         start()
     });
 }
 
-
 // Function to add a role to the list of roles
 
-// function remove(input) {
-//     const promptQ = {
-//         yes: "yes",
-//         no: "no I don't (view all employees on the main option)"
-//     };
-//     inquirer.prompt([
-//         {
-//             name: "action",
-//             type: "list",
-//             message: "In order to proceed an employee, an ID must be entered. View all employees to get the employee ID. Do you know the employee ID?",
-//             choices: [promptQ.yes, promptQ.no]
-//         }
-//     ]).then(answer => {
-//         if (input === 'delete' && answer.action === "yes") removeEmployee();
-//         else if (input === 'role' && answer.action === "yes") updateRole();
-//         else viewAllEmployees();
+function addRoleQs(role_title, salary, department_id) {
+    connection.query("INSERT INTO roles (role_title, salary, department_id) VALUES (?, ?, (SELECT id FROM departments WHERE department_name = ?));", [role_title, Number(salary), department_id], function (err, results) {
+        console.log(results);
+        console.log("This new role has been successfully added to the database!");
+        start.start();
+    })
+}
 
-//         start()
-//     });
-// };
+function addRole() {
+    connection.query('SELECT department_name FROM departments',function (err, results) {
+        departmentsArr.length = 0;
+        for (const departments in results) {
+            if (departmentsArr.indexOf(results[departments].department_name) === -1) {
+                departmentsArr.push(results[departments].department_name);
+            }
+        }
+    })
+    inquirer.prompt(addRoleQs)
+        .then((response) => {
+            addRoleQs(response.aRole, response.nsalary, response.aTdepartment);
+        });
+}
+
 
 
 
@@ -214,7 +203,7 @@ async function addEmployee() {
 
 
 
-// Function to ask for employee name when adding a new employee to the employee list
+// Function to ask for employee name when adding a new employee to the Employee list
 
 function newName() {
     return ([
@@ -227,6 +216,35 @@ function newName() {
             name: "lastName",
             type: "input",
             message: "Enter new employee's last name"
+        }
+    ]);
+}
+
+// Fuction to ask when adding a new role to the Roles list
+
+function addRoleQs() {
+    return ([
+        {
+            name: "aRole",
+            type: "input",
+            message: "Enter name of the new role"
+        },
+        {
+            name: "nSalary",
+            type: "input",
+            message: "Enter salary of new role (must ne numeric)",
+            validate: (answer) => {
+                if (NaN(answer)) {
+                    return "We said NUMBERS ONLY!";
+                }
+                return true;
+            }
+        },
+        {
+            type: 'list',
+            name: 'aTdepartment',
+            message: 'Which department does the role belong to?',
+            choices: departmentsArr
         }
     ]);
 }
