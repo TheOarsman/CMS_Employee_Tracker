@@ -145,7 +145,7 @@ async function addEmployee() {
 // Function to add a role to the list of roles
 
 function addRoleQs(role_title, salary, department_id) {
-    connection.query("INSERT INTO roles (role_title, salary, department_id) VALUES (?, ?, (SELECT id FROM departments WHERE department_name = ?));", [role_title, Number(salary), department_id], function (err, results) {
+    mysqlconnection.query("INSERT INTO roles (role_title, salary, department_id) VALUES (?, ?, (SELECT id FROM departments WHERE department_name = ?));", [role_title, Number(salary), department_id], function (err, results) {
         console.log(results);
         console.log("This new role has been successfully added to the database!");
         start.start();
@@ -153,7 +153,7 @@ function addRoleQs(role_title, salary, department_id) {
 }
 
 function addRole() {
-    connection.query('SELECT department_name FROM departments',function (err, results) {
+    mysqlconnection.query('SELECT department_name FROM departments',function (err, results) {
         departmentsArr.length = 0;
         for (const departments in results) {
             if (departmentsArr.indexOf(results[departments].department_name) === -1) {
