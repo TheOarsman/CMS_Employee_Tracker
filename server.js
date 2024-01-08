@@ -100,7 +100,7 @@ async function addEmployee() {
                 continue;
             }
         }
-        connection.query('select * from employees', async (err, res) => {
+        connection.query('select * from employees WHERE manager_id is NULL', async (err, res) => {
             if (err) throw err;
             let choices = res.map(res => `${res.first_name} ${res.last_name}`);
             choices.push('none');
@@ -122,8 +122,6 @@ async function addEmployee() {
                     if (data.fullName === manager) {
                         manager_Id = data.id;
                         managerName = data.fullName;
-                        console.log(manager_Id);
-                        console.log(managerName);
                         continue;
                     }
                 }
@@ -133,13 +131,13 @@ async function addEmployee() {
                 {
                     first_name: addname.firstName,
                     last_name: addname.lastName,
+                    manager_id: manager_Id,
                     role_id: roleId,
                 }
-
             );
         });
-        start()
     });
+    start()
 }
 
 // Function to add a role to the list of roles
