@@ -1,4 +1,4 @@
-const inquirer = require("inquirer")
+const inquirer = require('inquirer')
 const mysql = require('mysql2')
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -145,15 +145,17 @@ async function addEmployee() {
 // Function to add a role to the list of roles
 
 function addRoleQs(role_title, salary, department_id) {
-    mysqlconnection.query("INSERT INTO roles (role_title, salary, department_id) VALUES (?, ?, (SELECT id FROM departments WHERE department_name = ?));", [role_title, Number(salary), department_id], function (err, results) {
+
+    connection.query("INSERT INTO roles (role_title, salary, department_id) VALUES (?, ?, (SELECT id FROM departments WHERE department_name = ?));", [role_title, Number(salary), department_id], function (err, results) {
         console.log(results);
         console.log("This new role has been successfully added to the database!");
         start.start();
     })
 }
 
-function addRole() {
-    mysqlconnection.query('SELECT department_name FROM departments',function (err, results) {
+async function addRole() {
+    const newRole = await inquirer.prompt(addRoleQs());
+    connection.query('SELECT department_name FROM departments',function (err, results) {
         departmentsArr.length = 0;
         for (const departments in results) {
             if (departmentsArr.indexOf(results[departments].department_name) === -1) {
@@ -232,19 +234,13 @@ function addRoleQs() {
         {
             name: "nSalary",
             type: "input",
-            message: "Enter salary of new role (must ne numeric)",
-            validate: (answer) => {
-                if (NaN(answer)) {
-                    return "We said NUMBERS ONLY!";
-                }
-                return true;
-            }
+            message: "Enter salary of new role (must be numeric)",
         },
         {
             type: 'list',
             name: 'aTdepartment',
             message: 'Which department does the role belong to?',
-            choices: departmentsArr
+            choices: connection.query('SELECT department_name FROM departments')
         }
     ]);
 }
