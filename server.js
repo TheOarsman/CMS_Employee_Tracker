@@ -92,7 +92,7 @@ function viewEmployees() {
     })
 }
 
-// Function to an an employee to the list of employees
+// Function to add an employee to the list of employees
 
 async function addEmployee() {
     const addname = await inquirer.prompt(newName());
@@ -117,51 +117,43 @@ async function addEmployee() {
             if (err) throw err;
             let choices = res.map(res => `${res.first_name} ${res.last_name}`);
             choices.push('none');
-            // let { manager } = await inquirer.prompt([
-            //     {
-            //         name: 'manager',
-            //         type: 'list',
-            //         choices: choices,
-            //         message: "Who is this employee's manager?"
-            //     }
-            // ]);
-            // let manager_Id;
-            // let managerName;
-            // if (manager === 'none') {
-            //     manager_Id = null;
-            // } else {
-            //     for (const data of res) {
-            //         data.fullName = `${data.first_name} ${data.last_name}`;
-            //         if (data.fullName === manager) {
-            //             manager_Id = data.id;
-            //             managerName = data.fullName;
-            //             console.log(manager_Id);
-            //             console.log(managerName);
-            //             continue;
-            //         }
-            //     }
-            // }
-
+            let { manager } = await inquirer.prompt([
+                {
+                    name: 'manager',
+                    type: 'list',
+                    choices: choices,
+                    message: "Who is this employee's manager?"
+                }
+            ]);
+            let manager_Id;
+            let managerName;
+            if (manager === 'none') {
+                manager_Id = null;
+            } else {
+                for (const data of res) {
+                    data.fullName = `${data.first_name} ${data.last_name}`;
+                    if (data.fullName === manager) {
+                        manager_Id = data.id;
+                        managerName = data.fullName;
+                        console.log(manager_Id);
+                        console.log(managerName);
+                        continue;
+                    }
+                }
+            }
             connection.query(
                 'INSERT INTO employees SET ?',
                 {
-                    first_name: addname.first,
-                    last_name: addname.last,
+                    first_name: addname.firstName,
+                    last_name: addname.lastName,
                     role_id: roleId,
-                },
-                (err, res) => {
-                    if (err) throw err;
-                    console.log('Employee has been added. Please view all employee to verify...');    
-                    prompt();
-
                 }
+                
             );
-            
         });
+        start()
     });
-
 }
-
 
 
 // Function to add a role to the list of roles
