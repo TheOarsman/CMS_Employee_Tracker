@@ -55,7 +55,7 @@ function start() {
         });
 }
 
-// Function to see list of all departments
+// Function to see list of all departments, organized by "departments.id" & demartment_name
 function viewDepartments() {
     connection.query(`SELECT * FROM departments`, (_err, results) => {
         console.table(results)
@@ -63,7 +63,7 @@ function viewDepartments() {
     })
 }
 
-// Function to see list of all roles
+// Function to see list of all roles, organized by roles.id, salary, department_name, & role_title
 function viewRoles() {
     connection.query(`SELECT * FROM roles`, (_err, results) => {
         console.table(results)
@@ -83,6 +83,7 @@ function viewEmployees() {
 
 async function addEmployee() {
     const addname = await inquirer.prompt(newName());
+
     connection.query('SELECT roles.id, roles.role_title FROM roles ORDER BY roles.id;', async (err, res) => {
         if (err) throw err;
         const { role } = await inquirer.prompt([
@@ -93,6 +94,7 @@ async function addEmployee() {
                 message: "What is the employee's role?"
             }
         ]);
+
         let roleId;
         for (const row of res) {
             if (row.role_title === role) {
@@ -100,18 +102,20 @@ async function addEmployee() {
                 continue;
             }
         }
-        connection.query('select * from employees WHERE manager_id is NULL', async (err, res) => {
+
+        connection.query('SELECT * FROM employees WHERE manager_id is NULL', async (err, res) => {
             if (err) throw err;
-            let choices = res.map(res => `${res.first_name} ${res.last_name}`);
-            choices.push('none');
+            let managerChoices = res.map(res => `${res.first_name} ${res.last_name}`);
+            managerChoices.push('none');
             let { manager } = await inquirer.prompt([
                 {
                     name: 'manager',
                     type: 'list',
-                    choices: choices,
+                    choices: managerChoices,
                     message: "Who is this employee's manager?"
                 }
             ]);
+
             let manager_Id;
             let managerName;
             if (manager === null) {
@@ -153,6 +157,7 @@ function addRoleQs(role_title, salary, department_id) {
 
 async function addRole() {
     const newRole = await inquirer.prompt(addRoleQs());
+
     connection.query('SELECT department_name FROM departments', function (err, results) {
         departmentsArr.length = 0;
         for (const departments in results) {
@@ -165,6 +170,21 @@ async function addRole() {
         .then((response) => {
             addRoleQs(response.aRole, response.nsalary, response.aTdepartment);
         });
+
+
+    // // Final connection to make add.Role Function work! //    
+    // connection.query(
+        'INSERT INTO roles SET ?',
+        {
+            role_title: newRole.aRole,
+            salary: newRole.nsalary,
+            department_id: //manager_Id,
+            role_id: roleId,
+        }
+    );
+
+
+
 }
 
 
@@ -201,7 +221,7 @@ async function addRole() {
 
 
 
-
+//////////////////////// Question Arrays ////////////////////////
 
 // Function to ask for employee name when adding a new employee to the Employee list
 
@@ -238,7 +258,7 @@ function addRoleQs() {
             type: 'list',
             name: 'aTdepartment',
             message: 'Which department does the role belong to?',
-            choices: connection.query('SELECT department_name FROM departments')
+            choices: listOfDepartmentNames
         }
     ]);
 }
@@ -261,7 +281,21 @@ function listOfDepartmentNames() {
     });
 }
 
+// Function to pull departments.id based on Department selected from 'listOfDepartmentNames' function
+
+function pullDepartment_id () {
+    connection.query('SELECT departments.id FROM departments', async (err, res) => {
+        if (err) throw err;
+        let deptIdPull = res.map(res => '${res.departments.id}');
+        deptIdPull.push('none');
+        let
+    })
+}
+
+
+
 // Function to get list of Roles by Name (role_title)
+// THIS IS GOOD TO GO!!! 
 
 function listOfRoleTitles() {
     connection.query('SELECT role_title FROM roles ORDER BY roles.id;', async (err, res) => {
@@ -277,6 +311,7 @@ function listOfRoleTitles() {
 }
 
 //Function to get list of Departments by Name (department_name)
+// THIS IS GOOD TO GO!!! 
 
 function listOfManagers() {
     connection.query('SELECT * FROM employees WHERE manager_id is NULL', async (err, res) => {
