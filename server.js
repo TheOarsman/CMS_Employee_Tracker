@@ -39,12 +39,12 @@ function start() {
                 case "Add Role":
                     addRole()
                     break;
-                // case "Add Department":
-                //     addDepartment()
-                //     break;
-                // case "Update Employee Role":
-                //     updateEmployeeRole()
-                //     break;
+                case "Add Department":
+                    listOfDepartmentNames()
+                    break;
+                case "Update Employee Role":
+                    listOfManagers()
+                    break;
                 // case "Quit":
                 //     quitProgram()
                 //     break;
@@ -153,7 +153,7 @@ function addRoleQs(role_title, salary, department_id) {
 
 async function addRole() {
     const newRole = await inquirer.prompt(addRoleQs());
-    connection.query('SELECT department_name FROM departments',function (err, results) {
+    connection.query('SELECT department_name FROM departments', function (err, results) {
         departmentsArr.length = 0;
         for (const departments in results) {
             if (departmentsArr.indexOf(results[departments].department_name) === -1) {
@@ -242,5 +242,90 @@ function addRoleQs() {
         }
     ]);
 }
+
+
+////////////  Functions to show lists from seeds.sql  ////////////
+
+//Function to get list of Departments by Name (department_name)
+
+function listOfDepartmentNames() {
+    connection.query('SELECT departments.department_name FROM departments ORDER BY departments.id;', async (err, res) => {
+        if (err) throw err;
+        const { deptNameList } = await inquirer.prompt([
+            {
+                name: 'deptNameList',
+                type: 'list',
+                choices: () => res.map(res => res.department_name)
+            }
+        ]);
+    });
+}
+
+// Function to get list of Roles by Name (role_title)
+
+function listOfRoleTitles() {
+    connection.query('SELECT role_title FROM roles ORDER BY roles.id;', async (err, res) => {
+        if (err) throw err;
+        const { roleTitleList } = await inquirer.prompt([
+            {
+                name: 'roleTitleList',
+                type: 'list',
+                choices: () => res.map(res => res.role_title)
+            }
+        ]);
+    });
+}
+
+//Function to get list of Departments by Name (department_name)
+
+function listOfManagers() {
+    connection.query('SELECT * FROM employees WHERE manager_id is NULL', async (err, res) => {
+        if (err) throw err;
+        let managerChoices = res.map(res => `${res.first_name} ${res.last_name}`);
+        managerChoices.push('none');
+        const { managerList } = await inquirer.prompt([
+            {
+                name: 'managerList',
+                type: 'list',
+                choices: managerChoices,
+            }
+        ]);
+    });
+}
+
+
+
+
+
+
+// }
+
+
+// function listDepartmentNames() {
+
+// }
+
+
+// function listEmployeeFullName() {
+
+// }
+
+
+// function listManagers() {
+
+// }
+
+
+// function listDepartmentNames() {
+
+// }
+
+
+// function listDepartmentNames() {
+
+// }
+
+
+
 
 start()
