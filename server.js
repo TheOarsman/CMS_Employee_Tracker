@@ -174,14 +174,14 @@ async function addRole() {
 
     // // Final connection to make add.Role Function work! //    
     // connection.query(
-        'INSERT INTO roles SET ?',
-        {
-            role_title: newRole.aRole,
-            salary: newRole.nsalary,
-            department_id: //manager_Id,
-            role_id: roleId,
-        }
-    );
+    //     'INSERT INTO roles SET ?',
+    //     {
+    //         role_title: newRole.aRole,
+    //         salary: newRole.nsalary,
+    //         department_id: //manager_Id,
+    //         role_id: roleId,
+    //     }
+    // );
 
 
 
@@ -247,12 +247,12 @@ function addRoleQs() {
         {
             name: "aRole",
             type: "input",
-            message: "Enter name of the new role"
+            message: "Enter name of the new role:"
         },
         {
             name: "nSalary",
             type: "input",
-            message: "Enter salary of new role (must be numeric)",
+            message: "Enter salary of new role (must be numeric):",
         },
         {
             type: 'list',
@@ -267,6 +267,7 @@ function addRoleQs() {
 ////////////  Functions to show lists from seeds.sql  ////////////
 
 //Function to get list of Departments by Name (department_name)
+// THIS IS GOOD TO GO!!!
 
 function listOfDepartmentNames() {
     connection.query('SELECT departments.department_name FROM departments ORDER BY departments.id;', async (err, res) => {
@@ -283,14 +284,20 @@ function listOfDepartmentNames() {
 
 // Function to pull departments.id based on Department selected from 'listOfDepartmentNames' function
 
-function pullDepartment_id () {
-    connection.query('SELECT departments.id FROM departments', async (err, res) => {
-        if (err) throw err;
-        let deptIdPull = res.map(res => '${res.departments.id}');
-        deptIdPull.push('none');
-        let
-    })
-}
+// function pullDepartment_id () {
+//     connection.query('SELECT departments.id FROM departments', async (err, res) => {
+//         if (err) throw err;
+//         let deptIdPull = res.map(res => res.departments.id);
+//         deptIdPull.push('none');
+//         let { autoDepartmentsID } = await inquirer.prompt([
+//             {
+//                 name: 'autoDepartmentsID',
+//                 type: 'list',
+//                 choices: deptIdPull,
+//             }
+//         ]);
+//     })
+// }
 
 
 
