@@ -158,34 +158,49 @@ function addRoleQs(role_title, salary, department_id) {
 async function addRole() {
     const newRole = await inquirer.prompt(addRoleQs());
 
-    connection.query('SELECT department_name FROM departments', function (err, results) {
-        departmentsArr.length = 0;
-        for (const departments in results) {
-            if (departmentsArr.indexOf(results[departments].department_name) === -1) {
-                departmentsArr.push(results[departments].department_name);
+    connection.query('SELECT departments.id, department_name FROM departments ORDER BY departments.id', async (err, results) => {
+        if (err) throw err;
+        const { depts } = await inquirer.prompt([
+            {
+                name: 'depts',
+                type: 'list',
+                choices: () => res.map(res => res.department_name),
+                message: "What department is the new role being added to?"
+            }
+        ]);
+
+        let newDeptID;
+        for (const row of res) {
+            if (row.department_name === depts) {
+                newDeptID = row.id;
+                continue;
             }
         }
+
+        //Keep adding below this// this is working!!!
+
+        inquirer.prompt(addRoleQs)
+            .then((response) => {
+                addRoleQs(response.aRole, response.nsalary, response.aTdepartment);
+            });
+
+
+        // // Final connection to make add.Role Function work! //    
+        // connection.query(
+        //     'INSERT INTO roles SET ?',
+        //     {
+        //         role_title: newRole.aRole,
+        //         salary: newRole.nsalary,
+        //         department_id: //manager_Id,
+        //         role_id: roleId,
+        //     }
+        // );
+
+
     })
-    inquirer.prompt(addRoleQs)
-        .then((response) => {
-            addRoleQs(response.aRole, response.nsalary, response.aTdepartment);
-        });
-
-
-    // // Final connection to make add.Role Function work! //    
-    // connection.query(
-    //     'INSERT INTO roles SET ?',
-    //     {
-    //         role_title: newRole.aRole,
-    //         salary: newRole.nsalary,
-    //         department_id: //manager_Id,
-    //         role_id: roleId,
-    //     }
-    // );
-
-
-
 }
+
+
 
 
 
@@ -258,7 +273,7 @@ function addRoleQs() {
             type: 'list',
             name: 'aTdepartment',
             message: 'Which department does the role belong to?',
-            choices: listOfDepartmentNames
+            choices: listOfDepartmentNames()
         }
     ]);
 }
