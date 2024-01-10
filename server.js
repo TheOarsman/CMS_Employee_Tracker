@@ -223,70 +223,57 @@ function addRoleQs() {
             type: 'list',
             name: 'aTdepartment',
             message: 'Which department does the role belong to?',
-            choices: listOfDepartmentNames()
+            choices: async () => {
+                const departmentList = await listOfDepartmentNames();
+                return departmentList.map(dept => dept.department_name);
+            }
         }
     ];
 }
 
 /// Function to get list of Departments by Name (department_name), used above for prompt in "addRoleQs" function
 
-function listOfDepartmentNames() {
-    connection.query('SELECT departments.department_name FROM departments ORDER BY departments.id;', async (err, res) => {
-        if (err) throw err;
-        const { deptNameList } = await inquirer.prompt([
-            {
-                name: 'deptNameList',
-                type: 'list',
-                choices: () => res.map(res => res.department_name)
-            }
-        ]);
+async function listOfDepartmentNames() {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT departments.id, departments.department_name FROM departments ORDER BY departments.id;', async (err, res) => {
+            if (err) reject(err);
+            resolve(res);
+        });
     });
 }
 
 /// / / / / / / / / Function to add a new role to the table of roles / / / / / / / / ///
-function addRoleToBD(role_title, salary, department_id) {
-
+function addRoleToDB(role_title, salary, department_id) {
     connection.query(
-        "INSERT INTO roles (role_title, salary, department_id) VALUES (?, ?, (SELECT id FROM departments WHERE department_name = ?));",
+        "INSERT INTO roles (role_title, salary, department_id) VALUES (?, ?, ?);",
         [role_title, Number(salary), department_id],
         function (err, results) {
             if (err) throw err;
             console.log(results);
             console.log("This new role has been successfully added to the database!");
-            start.start();
+            // Assuming start.start() is a valid function
+            start()
         }
-    )
+    );
 }
 
 async function addRole() {
     try {
-        const newRole = await inquirer.prompt(addRoleQs());
+        const response = await inquirer.prompt(addRoleQs());
+        const departmentList = await listOfDepartmentNames();
 
-        const results = await listOfDepartmentNames();
-        const { depts } = await inquirer.prompt([
-            {
-                name: 'depts',
-                type: 'list',
-                choices: results,
-                message: "What department is the new role being added to?"
-            }
-        ]);
-
-        let newDeptID;
-        for (const row of results) {
-            if (row.department_name === depts) {
-                newDeptID = row.id;
-                continue;
-            }
+        const selectedDepartment = departmentList.find(dept => dept.department_name === response.aTdepartment);
+        if (!selectedDepartment) {
+            throw new Error("Selected department not found.");
         }
 
-        addRoleToBD(response.aRole, response.nsalary, response.aTdepartment);
+        addRoleToDB(response.aRole, response.nSalary, selectedDepartment.id);
     } catch (error) {
         console.error('Error adding role:', error);
     }
 }
 
-addRole();
+
 
 
 // Function to add a new department to the list of all departments
