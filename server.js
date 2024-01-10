@@ -55,7 +55,11 @@ function start() {
         });
 }
 
-// Function to see list of all departments, organized by "departments.id" & demartment_name
+
+/// / / / / / / / / Needed Fucntion & Array for adding an Employee / / / / / / / / ///
+/// / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /// 
+
+/// Function to see Departments table ///
 function viewDepartments() {
     connection.query(`SELECT * FROM departments`, (_err, results) => {
         console.table(results)
@@ -63,7 +67,7 @@ function viewDepartments() {
     })
 }
 
-// Function to see list of all roles, organized by roles.id, salary, department_name, & role_title
+/// Function to see Roles table ///
 function viewRoles() {
     connection.query(`SELECT * FROM roles`, (_err, results) => {
         console.table(results)
@@ -71,13 +75,14 @@ function viewRoles() {
     })
 }
 
-// Function to see list of all employees
+/// Function to see Employees table ///
 function viewEmployees() {
     connection.query(`SELECT * FROM employees`, (_err, results) => {
         console.table(results)
         start()
     })
 }
+
 
 /// / / / / / / / / Needed Fucntion & Array for adding an Employee / / / / / / / / ///
 /// / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /// 
@@ -197,11 +202,48 @@ async function addEmployee() {
     }
 }
 
-/// / / / / / / / / Needed Fucntion & Array for adding a new Role / / / / / / / / ///
-/// / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /// 
 
-// Function to add a role to the list of roles
+/// / / / / / / / / Needed Fucntions & Arrays for adding a new Role / / / / / / / / ///
+/// / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /// 
 
+/// Fuction to ask when what the new role Name (title) and Salary are, as well as what Department the role will be added to
+function addRoleQs() {
+    return ([
+        {
+            name: "aRole",
+            type: "input",
+            message: "Enter name of the new role:"
+        },
+        {
+            name: "nSalary",
+            type: "input",
+            message: "Enter salary of new role (must be numeric):",
+        },
+        {
+            type: 'list',
+            name: 'aTdepartment',
+            message: 'Which department does the role belong to?',
+            choices: listOfDepartmentNames()
+        }
+    ]);
+}
+
+/// Function to get list of Departments by Name (department_name), used above for prompt in "addRoleQs" function
+
+function listOfDepartmentNames() {
+    connection.query('SELECT departments.department_name FROM departments ORDER BY departments.id;', async (err, res) => {
+        if (err) throw err;
+        const { deptNameList } = await inquirer.prompt([
+            {
+                name: 'deptNameList',
+                type: 'list',
+                choices: () => res.map(res => res.department_name)
+            }
+        ]);
+    });
+}
+
+/// / / / / / / / / Function to add a new role to the table of roles / / / / / / / / ///
 function addRoleQs(role_title, salary, department_id) {
 
     connection.query("INSERT INTO roles (role_title, salary, department_id) VALUES (?, ?, (SELECT id FROM departments WHERE department_name = ?));", [role_title, Number(salary), department_id], function (err, results) {
@@ -296,47 +338,12 @@ async function addRole() {
 
 
 
-// Fuction to ask when adding a new role to the Roles list
 
-function addRoleQs() {
-    return ([
-        {
-            name: "aRole",
-            type: "input",
-            message: "Enter name of the new role:"
-        },
-        {
-            name: "nSalary",
-            type: "input",
-            message: "Enter salary of new role (must be numeric):",
-        },
-        {
-            type: 'list',
-            name: 'aTdepartment',
-            message: 'Which department does the role belong to?',
-            choices: listOfDepartmentNames()
-        }
-    ]);
-}
 
 
 ////////////  Functions to show lists from seeds.sql  ////////////
 
-//Function to get list of Departments by Name (department_name)
-// THIS IS GOOD TO GO!!!
 
-function listOfDepartmentNames() {
-    connection.query('SELECT departments.department_name FROM departments ORDER BY departments.id;', async (err, res) => {
-        if (err) throw err;
-        const { deptNameList } = await inquirer.prompt([
-            {
-                name: 'deptNameList',
-                type: 'list',
-                choices: () => res.map(res => res.department_name)
-            }
-        ]);
-    });
-}
 
 // Function to pull departments.id based on Department selected from 'listOfDepartmentNames' function
 
