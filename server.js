@@ -79,70 +79,126 @@ function viewEmployees() {
     })
 }
 
-// Function to add an employee to the list of employees
+/// / / / / / / / / Needed Fucntion & Array for adding an Employee / / / / / / / / ///
+/// / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /// 
 
-async function addEmployee() {
-    const addname = await inquirer.prompt(newName());
-
-    connection.query('SELECT roles.id, roles.role_title FROM roles ORDER BY roles.id;', async (err, res) => {
-        if (err) throw err;
-        const { role } = await inquirer.prompt([
-            {
-                name: 'role',
-                type: 'list',
-                choices: () => res.map(res => res.role_title),
-                message: "What is the employee's role?"
-            }
-        ]);
-
-        let roleId;
-        for (const row of res) {
-            if (row.role_title === role) {
-                roleId = row.id;
-                continue;
-            }
+/// Function to ask for employee name when adding a new employee to the Employee list ///
+function newName() {
+    return ([
+        {
+            name: "firstName",
+            type: "input",
+            message: "Enter new employee's first name"
+        },
+        {
+            name: "lastName",
+            type: "input",
+            message: "Enter new employee's last name"
         }
+    ]);
+}
 
-        connection.query('SELECT * FROM employees WHERE manager_id is NULL', async (err, res) => {
+/// / / / / / / / / Function to add an employee to the list of employees / / / / / / / / ///
+async function addEmployee() {
+    try {
+        const addname = await inquirer.prompt(newName());
+
+        // console.log('Adding employee:', addname);
+
+        connection.query('SELECT roles.id, roles.role_title FROM roles ORDER BY roles.id;', async (err, res) => {
             if (err) throw err;
-            let managerChoices = res.map(res => `${res.first_name} ${res.last_name}`);
-            managerChoices.push('none');
-            let { manager } = await inquirer.prompt([
+
+            // console.log('Roles retrieved:', res);
+
+/// / / / / / / / / Gives list of different roles / / / / / / / / ///
+            const { role } = await inquirer.prompt([
                 {
-                    name: 'manager',
+                    name: 'role',
                     type: 'list',
-                    choices: managerChoices,
-                    message: "Who is this employee's manager?"
+                    choices: () => res.map(res => res.role_title),
+                    message: "What is the employee's role?"
                 }
             ]);
 
-            let manager_Id;
-            let managerName;
-            if (manager === null) {
-                manager_Id = 'none';
-            } else {
-                for (const data of res) {
-                    data.fullName = `${data.first_name} ${data.last_name}`;
-                    if (data.fullName === manager) {
-                        manager_Id = data.id;
-                        managerName = data.fullName;
-                        continue;
-                    }
+            // console.log('Selected role:', role);
+
+
+/// / / / / / / / / Pulls and applies role_ID to selected role / / / / / / / / ///
+            let roleId;
+            for (const row of res) {
+                if (row.role_title === role) {
+                    roleId = row.id;
+                    continue;
                 }
             }
-            connection.query(
-                'INSERT INTO employees SET ?',
-                {
-                    first_name: addname.firstName,
-                    last_name: addname.lastName,
-                    manager_id: manager_Id,
-                    role_id: roleId,
+
+            // console.log('Role ID:', roleId);
+
+
+/// / / / / / / / / Gives list of Managers (selecting only those with an ID of 'NULL') / / / / / / / / ///
+            connection.query('SELECT * FROM employees WHERE manager_id is NULL', async (err, res) => {
+                if (err) throw err;
+
+                // console.log('Maganers retrieved:', res);
+
+                let managerChoices = res.map(res => `${res.first_name} ${res.last_name}`);
+                managerChoices.push('none');
+                let { manager } = await inquirer.prompt([
+                    {
+                        name: 'manager',
+                        type: 'list',
+                        choices: managerChoices,
+                        message: "Who is this employee's manager?"
+                    }
+                ]);
+
+                // console.log('Selected manger:', manager);
+
+
+/// / / / / / / / / Applies cooresponding manager_ID with the Manager selected above / / / / / / / / ///
+                let manager_Id;
+                let managerName;
+                if (manager === null) {
+                    manager_Id = 'none';
+                } else {
+                    for (const data of res) {
+                        data.fullName = `${data.first_name} ${data.last_name}`;
+                        if (data.fullName === manager) {
+                            manager_Id = data.id;
+                            managerName = data.fullName;
+                            continue;
+                        }
+                    }
                 }
-            );
-        });
-    });
-    start()
+
+                // console.log('Manager ID:', manager_Id);
+                // console.log('Manager Name:', managerName);
+
+/// / / / / / / / / INSERTS all of the selected and pulled data INTO the "employees" SET / / / / / / / / ///                
+                connection.query(
+                    'INSERT INTO employees SET ?',
+                    {
+                        first_name: addname.firstName,
+                        last_name: addname.lastName,
+                        manager_id: manager_Id,
+                        role_id: roleId,
+                    },
+                    (error, results) => {
+                        if (error) throw error;
+
+                        console.log('Employee added successfully:', results);
+                        start();
+                    }
+                );
+            });
+        })
+    } catch (error) {
+        console.error('Error adding employee:', error);
+    }
 }
+
+/// / / / / / / / / Needed Fucntion & Array for adding a new Role / / / / / / / / ///
+/// / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /// 
 
 // Function to add a role to the list of roles
 
@@ -238,22 +294,7 @@ async function addRole() {
 
 //////////////////////// Question Arrays ////////////////////////
 
-// Function to ask for employee name when adding a new employee to the Employee list
 
-function newName() {
-    return ([
-        {
-            name: "firstName",
-            type: "input",
-            message: "Enter new employee's first name"
-        },
-        {
-            name: "lastName",
-            type: "input",
-            message: "Enter new employee's last name"
-        }
-    ]);
-}
 
 // Fuction to ask when adding a new role to the Roles list
 
