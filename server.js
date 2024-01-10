@@ -115,7 +115,7 @@ async function addEmployee() {
 
             // console.log('Roles retrieved:', res);
 
-/// / / / / / / / / Gives list of different roles / / / / / / / / ///
+            /// / / / / / / / / Gives list of different roles / / / / / / / / ///
             const { role } = await inquirer.prompt([
                 {
                     name: 'role',
@@ -128,7 +128,7 @@ async function addEmployee() {
             // console.log('Selected role:', role);
 
 
-/// / / / / / / / / Pulls and applies role_ID to selected role / / / / / / / / ///
+            /// / / / / / / / / Pulls and applies role_ID to selected role / / / / / / / / ///
             let roleId;
             for (const row of res) {
                 if (row.role_title === role) {
@@ -140,7 +140,7 @@ async function addEmployee() {
             // console.log('Role ID:', roleId);
 
 
-/// / / / / / / / / Gives list of Managers (selecting only those with an ID of 'NULL') / / / / / / / / ///
+            /// / / / / / / / / Gives list of Managers (selecting only those with an ID of 'NULL') / / / / / / / / ///
             connection.query('SELECT * FROM employees WHERE manager_id is NULL', async (err, res) => {
                 if (err) throw err;
 
@@ -160,7 +160,7 @@ async function addEmployee() {
                 // console.log('Selected manger:', manager);
 
 
-/// / / / / / / / / Applies cooresponding manager_ID with the Manager selected above / / / / / / / / ///
+                /// / / / / / / / / Applies cooresponding manager_ID with the Manager selected above / / / / / / / / ///
                 let manager_Id;
                 let managerName;
                 if (manager === null) {
@@ -179,7 +179,7 @@ async function addEmployee() {
                 // console.log('Manager ID:', manager_Id);
                 // console.log('Manager Name:', managerName);
 
-/// / / / / / / / / INSERTS all of the selected and pulled data INTO the "employees" SET / / / / / / / / ///                
+                /// / / / / / / / / INSERTS all of the selected and pulled data INTO the "employees" SET / / / / / / / / ///                
                 connection.query(
                     'INSERT INTO employees SET ?',
                     {
@@ -208,7 +208,7 @@ async function addEmployee() {
 
 /// Fuction to ask when what the new role Name (title) and Salary are, as well as what Department the role will be added to
 function addRoleQs() {
-    return ([
+    return [
         {
             name: "aRole",
             type: "input",
@@ -225,7 +225,7 @@ function addRoleQs() {
             message: 'Which department does the role belong to?',
             choices: listOfDepartmentNames()
         }
-    ]);
+    ];
 }
 
 /// Function to get list of Departments by Name (department_name), used above for prompt in "addRoleQs" function
@@ -244,63 +244,49 @@ function listOfDepartmentNames() {
 }
 
 /// / / / / / / / / Function to add a new role to the table of roles / / / / / / / / ///
-function addRoleQs(role_title, salary, department_id) {
+function addRoleToBD(role_title, salary, department_id) {
 
-    connection.query("INSERT INTO roles (role_title, salary, department_id) VALUES (?, ?, (SELECT id FROM departments WHERE department_name = ?));", [role_title, Number(salary), department_id], function (err, results) {
-        console.log(results);
-        console.log("This new role has been successfully added to the database!");
-        start.start();
-    })
+    connection.query(
+        "INSERT INTO roles (role_title, salary, department_id) VALUES (?, ?, (SELECT id FROM departments WHERE department_name = ?));",
+        [role_title, Number(salary), department_id],
+        function (err, results) {
+            if (err) throw err;
+            console.log(results);
+            console.log("This new role has been successfully added to the database!");
+            start.start();
+        }
+    )
 }
 
 async function addRole() {
-    const newRole = await inquirer.prompt(addRoleQs());
+    try {
+        const newRole = await inquirer.prompt(addRoleQs());
 
-    connection.query('SELECT departments.id, department_name FROM departments ORDER BY departments.id', async (err, results) => {
-        if (err) throw err;
+        const results = await listOfDepartmentNames();
         const { depts } = await inquirer.prompt([
             {
                 name: 'depts',
                 type: 'list',
-                choices: () => res.map(res => res.department_name),
+                choices: results,
                 message: "What department is the new role being added to?"
             }
         ]);
 
         let newDeptID;
-        for (const row of res) {
+        for (const row of results) {
             if (row.department_name === depts) {
                 newDeptID = row.id;
                 continue;
             }
         }
 
-        //Keep adding below this// this is working!!!
-
-        inquirer.prompt(addRoleQs)
-            .then((response) => {
-                addRoleQs(response.aRole, response.nsalary, response.aTdepartment);
-            });
-
-
-        // // Final connection to make add.Role Function work! //    
-        // connection.query(
-        //     'INSERT INTO roles SET ?',
-        //     {
-        //         role_title: newRole.aRole,
-        //         salary: newRole.nsalary,
-        //         department_id: //manager_Id,
-        //         role_id: roleId,
-        //     }
-        // );
-
-
-    })
+        addRoleToBD(response.aRole, response.nsalary, response.aTdepartment);
+    } catch (error) {
+        console.error('Error adding role:', error);
+    }
 }
 
-
-
-
+addRole();
 
 
 // Function to add a new department to the list of all departments
