@@ -8,7 +8,7 @@ const connection = mysql.createConnection({
 });
 
 // List of answers for first prompt
-const whereToStart = ["View All Employees", "View All Departments", "View All Roles", "Update Employee Role", "Add Employee", "Add Role", "Add Department", "Quit"];
+const whereToStart = ["View All Employees", "View All Departments", "View All Roles", "View Managers", "Update Employee Role", "Add Employee", "Add Role", "Add Department", "Quit"];
 
 // Starting Prompt, asking what user would like to do
 function start() {
@@ -33,6 +33,9 @@ function start() {
                 case "View All Employees":
                     viewEmployees()
                     break;
+                case "View All Employees":
+                    listOfManagers()
+                    break;
                 case "Add Employee":
                     addEmployee()
                     break;
@@ -40,10 +43,10 @@ function start() {
                     addRole()
                     break;
                 case "Add Department":
-                    listOfDepartmentNames()
+                    addDepartment()
                     break;
                 case "Update Employee Role":
-                    listOfManagers()
+                    updateEmployeeRole()
                     break;
                 // case "Quit":
                 //     quitProgram()
@@ -231,7 +234,7 @@ function addRoleQs() {
     ];
 }
 
-/// Function to get list of Departments by Name (department_name), used above for prompt in "addRoleQs" function
+/// / / / / Function to get list of Departments by Name (department_name), used above for prompt in "addRoleQs" function / / / / ///
 
 async function listOfDepartmentNames() {
     return new Promise((resolve, reject) => {
@@ -242,7 +245,7 @@ async function listOfDepartmentNames() {
     });
 }
 
-/// / / / / / / / / Function to add a new role to the table of roles / / / / / / / / ///
+/// / / / / / / / / Function to add a new role to the Roles table / / / / / / / / ///
 function addRoleToDB(role_title, salary, department_id) {
     connection.query(
         "INSERT INTO roles (role_title, salary, department_id) VALUES (?, ?, ?);",
@@ -274,6 +277,45 @@ async function addRole() {
 }
 
 
+/// / / / / / / / / Needed Fucntions & Arrays for adding a new Department / / / / / / / / ///
+/// / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /// 
+
+/// / / / / Fuction to ask when what the new department name is / / / / ///
+function addDeptQs() {
+    return [
+        {
+            name: "aDept",
+            type: "input",
+            message: "Enter name of the new department:"
+        }
+    ];
+}
+
+/// / / / / / / / / Function to add a new department to the Departments table / / / / / / / / ///
+
+function addDeptToDB(department_name) {
+    connection.query(
+        "INSERT INTO departments (department_name) VALUES (?);",
+        [department_name],
+        function (err, results) {
+            if (err) throw err;
+            console.log(results);
+            console.log("This new department has been successfully added to the database!");
+            // Assuming start.start() is a valid function
+            start()
+        }
+    );
+}
+
+async function addDepartment() {
+    try {
+        const response = await inquirer.prompt(addDeptQs());
+
+        addDeptToDB(response.aDept);
+    } catch (error) {
+        console.error('Error adding role:', error);
+    }
+}
 
 
 // Function to add a new department to the list of all departments
