@@ -1,5 +1,8 @@
 const inquirer = require('inquirer')
 const mysql = require('mysql2')
+const fs = require('fs')
+const asciiArt = fs.readFileSync('asciiart.txt', 'utf8')
+console.log(asciiArt);
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -444,8 +447,6 @@ function listOfManagers() {
 // function listDepartmentNames() {
 
 // }
-
-
 
 
 start()
