@@ -3,6 +3,7 @@ const mysql = require("mysql2");
 const fs = require("fs");
 const asciiArt = fs.readFileSync("asciiart.txt", "utf8");
 console.log(asciiArt);
+console.log();
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -347,6 +348,7 @@ function quitProgram() {
     // Read ASCII art from a file
     const quitImage = fs.readFileSync("pastalasagna.txt", "utf8");
     console.log(quitImage);
+    console.log();
   };
 
   // Function to stop application and display ASCII art
