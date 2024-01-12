@@ -1,6 +1,7 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const fs = require("fs");
+const { connect } = require("http2");
 const asciiArt = fs.readFileSync("asciiart.txt", "utf8");
 console.log(asciiArt);
 console.log();
@@ -348,6 +349,84 @@ async function addDepartment() {
     console.error("Error adding role:", error);
   }
 }
+
+
+/// / / / / / / / / Needed Fucntions & Arrays for updateing Employee role / / / / / / / / ///
+/// / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / ///
+
+
+/// / / / / / / / / Function to get list of Eployees, by name, to update their role in the "updateEmployeeRoleQs" funciton  / / / / / / / / ///
+
+async function listOfEmployeetNames() {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      "SELECT departments.id, departments.department_name FROM departments ORDER BY departments.id;",
+      async (err, res) => {
+        if (err) reject(err);
+        resolve(res);
+      }
+    );
+  });
+}
+
+
+async function updateEmployeeRole() {
+    try {
+        const changeEmployeeRole = await inquirer.prompt(listOfEmployeetNames());
+
+        console.log('Employee selected to update role:', changeEmployeeRole);
+    
+        connectiong.query(
+            "SELECT employees.id, employees.last_name, employees.first_name, employees.role_id FROM employees ORDER BY employees.last_name",
+            async (err, res) => {
+                if (err) throw err;
+
+                console.log{'Eployee list retrieved:', res);
+}
+            }
+        )
+
+
+
+
+connection.query(
+    "SELECT id FROM employees",
+    async (err, res) => {
+        if (err) throw err;
+
+        console.log('Employees retrieved', res);
+
+        let employeeChoices = res.map(
+            (res) => `${res.first_name} ${res.last_name}`
+        );
+        employeeChoice.push("id");
+        let { employee } = await inquirer.prompt([
+            {
+                name: "employeeList",
+                type: "list",
+                choices: employeeChoices,
+                message: "Which employee's role do you need to update?",
+            },
+        ]);
+
+        console.log('Selected employee:', employee);
+    }
+)
+  let manager_Id;
+            let employeeName;
+            if (manager === null) {
+              manager_Id = "none";
+            } else {
+              for (const data of res) {
+                data.fullName = `${data.first_name} ${data.last_name}`;
+                if (data.fullName === manager) {
+                  manager_Id = data.id;
+                  employeeName = data.fullName;
+                  continue;
+                }
+              }
+            }
+
 
 /// / / / / / / / / Function to quit running the program / / / / / / / / ///
 
