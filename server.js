@@ -57,9 +57,9 @@ function start() {
         case "Update Employee Role":
           updateEmployeeRole();
           break;
-        // case "Quit":
-        //     quitProgram()
-        //     break;
+        case "Quit":
+          quitProgram();
+          break;
 
         default:
           break;
@@ -334,32 +334,30 @@ async function addDepartment() {
   }
 }
 
-// Function to add a new department to the list of all departments
+/// / / / / / / / / Function to quit running the program / / / / / / / / ///
 
-// function addDepartment() {
-//     connection.query(`select * from employees`, (err, results) => {
-//         console.table(results)
-//         start()
-//     })
-// }
+function quitProgram() {
+  const stopApplication = () => {
+    console.log("Pasta Lasagna!");
+    process.exit(0);
+  };
 
-// Function to update an Employee's role to the list of roles
+  // Function to display ASCII art
+  const displayAsciiArt = () => {
+    // Read ASCII art from a file
+    const quitImage = fs.readFileSync("pastalasagna.txt", "utf8");
+    console.log(quitImage);
+  };
 
-// function updateEmployeeRole() {
-//     connection.query(`select * from employees`, (err, results) => {
-//         console.table(results)
-//         start()
-//     })
-// }
+  // Function to stop application and display ASCII art
+  const stopAndDisplay = () => {
+    displayAsciiArt();
+    stopApplication();
+  };
 
-// Function to quit running the program
-
-// function quitProgram() {
-//     connection.query(`select * from employees`, (err, results) => {
-//         console.table(results)
-//         start()
-//     })
-// }
+  // Use the stopAndDisplay function when you want to stop and display ASCII art
+  stopAndDisplay();
+}
 
 //////////////////////// Question Arrays ////////////////////////
 
