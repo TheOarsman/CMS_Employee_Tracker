@@ -204,8 +204,14 @@ async function addEmployee() {
               },
               (error, results) => {
                 if (error) throw error;
-
-                console.log("Employee added successfully:", results);
+                /// Purposefully have excessive, blank, "console.logs" to have visual spacing in the terminal ///
+                console.log();
+                console.log(results);
+                console.log();
+                console.log(
+                  "The Employee has been successfully added to the database!"
+                );
+                console.log();
                 start();
               }
             );
@@ -267,8 +273,12 @@ function addRoleToDB(role_title, salary, department_id) {
     [role_title, Number(salary), department_id],
     function (err, results) {
       if (err) throw err;
+      /// Purposefully have excessive, blank, "console.logs" to have visual spacing in the terminal ///
+      console.log();
       console.log(results);
+      console.log();
       console.log("This new role has been successfully added to the database!");
+      console.log();
       // Assuming start.start() is a valid function
       start();
     }
@@ -315,10 +325,14 @@ function addDeptToDB(department_name) {
     [department_name],
     function (err, results) {
       if (err) throw err;
+      /// Purposefully have excessive, blank, "console.logs" to have visual spacing in the terminal ///
+      console.log();
       console.log(results);
+      console.log();
       console.log(
         "This new department has been successfully added to the database!"
       );
+      console.log();
       // Assuming start.start() is a valid function
       start();
     }
@@ -360,90 +374,5 @@ function quitProgram() {
   // Use the stopAndDisplay function when you want to stop and display ASCII art
   stopAndDisplay();
 }
-
-//////////////////////// Question Arrays ////////////////////////
-
-////////////  Functions to show lists from seeds.sql  ////////////
-
-// Function to pull departments.id based on Department selected from 'listOfDepartmentNames' function
-
-// function pullDepartment_id () {
-//     connection.query('SELECT departments.id FROM departments', async (err, res) => {
-//         if (err) throw err;
-//         let deptIdPull = res.map(res => res.departments.id);
-//         deptIdPull.push('none');
-//         let { autoDepartmentsID } = await inquirer.prompt([
-//             {
-//                 name: 'autoDepartmentsID',
-//                 type: 'list',
-//                 choices: deptIdPull,
-//             }
-//         ]);
-//     })
-// }
-
-// Function to get list of Roles by Name (role_title)
-// THIS IS GOOD TO GO!!!
-
-function listOfRoleTitles() {
-  connection.query(
-    "SELECT role_title FROM roles ORDER BY roles.id;",
-    async (err, res) => {
-      if (err) throw err;
-      const { roleTitleList } = await inquirer.prompt([
-        {
-          name: "roleTitleList",
-          type: "list",
-          choices: () => res.map((res) => res.role_title),
-        },
-      ]);
-    }
-  );
-}
-
-//Function to get list of Departments by Name (department_name)
-// THIS IS GOOD TO GO!!!
-
-function listOfManagers() {
-  connection.query(
-    "SELECT * FROM employees WHERE manager_id is NULL",
-    async (err, res) => {
-      if (err) throw err;
-      let managerChoices = res.map(
-        (res) => `${res.first_name} ${res.last_name}`
-      );
-      managerChoices.push("none");
-      const { managerList } = await inquirer.prompt([
-        {
-          name: "managerList",
-          type: "list",
-          choices: managerChoices,
-        },
-      ]);
-    }
-  );
-}
-
-// }
-
-// function listDepartmentNames() {
-
-// }
-
-// function listEmployeeFullName() {
-
-// }
-
-// function listManagers() {
-
-// }
-
-// function listDepartmentNames() {
-
-// }
-
-// function listDepartmentNames() {
-
-// }
 
 start();
