@@ -350,89 +350,87 @@ async function addDepartment() {
   }
 }
 
-
 /// / / / / / / / / Needed Fucntions & Arrays for updateing Employee role / / / / / / / / ///
 /// / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / ///
 
-
-/// / / / / / / / / Function to get list of Eployees, by name, to update their role in the "updateEmployeeRoleQs" funciton  / / / / / / / / ///
-
-async function listOfEmployeetNames() {
-  return new Promise((resolve, reject) => {
-    connection.query(
-      "SELECT departments.id, departments.department_name FROM departments ORDER BY departments.id;",
-      async (err, res) => {
-        if (err) reject(err);
-        resolve(res);
-      }
-    );
-  });
-}
-
-
 async function updateEmployeeRole() {
-    try {
-        const changeEmployeeRole = await inquirer.prompt(listOfEmployeetNames());
+  try {
+    const employeeName = await listOfEmployeeNames();
 
-        console.log('Employee selected to update role:', changeEmployeeRole);
-    
-        connectiong.query(
-            "SELECT employees.id, employees.last_name, employees.first_name, employees.role_id FROM employees ORDER BY employees.last_name",
-            async (err, res) => {
-                if (err) throw err;
+    // Fetch the list of roles
+    connection.query("SELECT * FROM roles", async (err, roles) => {
+      if (err) throw err;
 
-                console.log{'Eployee list retrieved:', res);
+      // Prompt user to select a new role
+      const { newRole } = await inquirer.prompt([
+        {
+          name: "newRole",
+          type: "list",
+          choices: roles.map((role) => role.role_title),
+          message: "Select the new role for the employee:",
+        },
+      ]);
+
+      // Get the ID of the selected role
+      const newRoleId = roles.find((role) => role.role_title === newRole).id;
+
+      // Update the employee's role in the database
+      connection.query(
+        "UPDATE employees SET role_id = ? WHERE CONCAT(first_name, ' ', last_name) = ?",
+        [newRoleId, employeeName],
+        (error, results) => {
+          if (error) throw error;
+
+          // Display success message
+          console.log();
+          console.log(results);
+          console.log();
+          console.log("Employee role updated successfully!");
+          console.log();
+
+          // Restart the program
+          start();
+        }
+      );
+    });
+  } catch (error) {
+    console.error("Error updating employee role:", error);
+  }
 }
-            }
-        )
 
+/// / / / / / / / / Function to give list of employee names, in alphabetical order / / / / / / / / ///
 
+async function listOfEmployeeNames() {
+  const employeeChoices = await new Promise((resolve, reject) => {
+    connection.query("SELECT * FROM employees", (err, res) => {
+      if (err) throw err;
+      const employeeNames = res.map(
+        (res) => `${res.first_name} ${res.last_name}`
+      );
+      // Sort the employee names alphabetically
+      const sortedEmployeeNames = employeeNames.sort();
+      sortedEmployeeNames.push("none");
+      resolve(sortedEmployeeNames);
+    });
+  });
 
+  const { employeeList } = await inquirer.prompt([
+    {
+      name: "employeeList",
+      type: "list",
+      choices: employeeChoices,
+    },
+  ]);
 
-connection.query(
-    "SELECT id FROM employees",
-    async (err, res) => {
-        if (err) throw err;
-
-        console.log('Employees retrieved', res);
-
-        let employeeChoices = res.map(
-            (res) => `${res.first_name} ${res.last_name}`
-        );
-        employeeChoice.push("id");
-        let { employee } = await inquirer.prompt([
-            {
-                name: "employeeList",
-                type: "list",
-                choices: employeeChoices,
-                message: "Which employee's role do you need to update?",
-            },
-        ]);
-
-        console.log('Selected employee:', employee);
-    }
-)
-  let manager_Id;
-            let employeeName;
-            if (manager === null) {
-              manager_Id = "none";
-            } else {
-              for (const data of res) {
-                data.fullName = `${data.first_name} ${data.last_name}`;
-                if (data.fullName === manager) {
-                  manager_Id = data.id;
-                  employeeName = data.fullName;
-                  continue;
-                }
-              }
-            }
-
+  return employeeList;
+}
 
 /// / / / / / / / / Function to quit running the program / / / / / / / / ///
+/// / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / ///
 
 function quitProgram() {
   const stopApplication = () => {
-    console.log("Pasta Lasagna!");
+    console.log("So long and thanks for all the fish!!");
     process.exit(0);
   };
 
