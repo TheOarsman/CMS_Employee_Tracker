@@ -7,27 +7,27 @@ A command-line applicatino, or Content Management System (CMS), that allows user
 This applictaion uses:
 
 - [Inquierer Package](https://www.npmjs.com/package/inquirer/v/8.2.4)
-- Node.js
 - [MySQL2 Package](https://www.npmjs.com/package/mysql2)
 
 [YouTube: Name of vido that will eventually be put in here!](I need to make YouTube video so I can put a link here!)
 
-![Alt text](insert location/link of image - need to get a snip when done!)
+<img src="Assets/Images/ET_Srt_Bnnr.jpg" alt="Description" width="425"/><br>
+<img src="Assets/Images/ET_Qt_Bnnr.jpg" alt="Description" width="425"/>
 
 ## Tabel on Contents
 
-- [SQL_Employee_Tracker ](#sql_employee_tracker---)
-  - [Description](#description)
-  - [Tabel on Contents](#tabel-on-contents)
-  - [User Story](#user-story)
-  - [Acceptance Criteria](#acceptance-criteria)
-  - [Installation](#installation)
-  - [Usage](#usage)
-  - [License](#license)
-  - [Contributing](#contributing)
-  - [Tests](#tests)
-  - [Resources](#resources)
-  - [Questions/Contact](#questionscontact)
+- [SQL_Employee_Tracker ](#sql_employee_tracker---)<br>
+- [Description](#description)<br>
+- [Tabel on Contents](#tabel-on-contents)<br>
+- [User Story](#user-story)<br>
+- [Acceptance Criteria](#acceptance-criteria)<br>
+- [Installation](#installation)<br>
+- [Usage](#usage)<br>
+- [License](#license)<br>
+- [Contributing](#contributing)<br>
+- [Tests](#tests)<br>
+- [Resources](#resources)<br>
+- [Questions/Contact](#questionscontact)
 
 ## User Story
 
