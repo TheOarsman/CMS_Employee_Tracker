@@ -11,8 +11,7 @@ This applictaion uses:
 - [Inquierer Package](https://www.npmjs.com/package/inquirer/v/8.2.4)
 - [MySQL2 Package](https://www.npmjs.com/package/mysql2)
 
-YouTube Link:
-[SQL Employee Tracker Video Demonstration](https://www.youtube.com/watch?v=aUWs9hD5Fr8)
+[YouTube: SQL Employee Tracker Video Demonstration](https://www.youtube.com/watch?v=aUWs9hD5Fr8)
 
 <img src="Assets/Images/ET_Srt_Bnnr.jpg" alt="Description" width="425"/><br>
 <img src="Assets/Images/ET_Qt_Bnnr.jpg" alt="Description" width="425"/>
