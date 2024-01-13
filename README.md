@@ -1,4 +1,6 @@
-# SQL_Employee_Tracker ![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
+# SQL Employee Tracker
+
+![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
 
 ## Description
 
@@ -9,20 +11,19 @@ This applictaion uses:
 - [Inquierer Package](https://www.npmjs.com/package/inquirer/v/8.2.4)
 - [MySQL2 Package](https://www.npmjs.com/package/mysql2)
 
-[YouTube: Name of vido that will eventually be put in here!](I need to make YouTube video so I can put a link here!)
+YouTube Link:
+[SQL Employee Tracker Video Demonstration](https://www.youtube.com/watch?v=aUWs9hD5Fr8)
 
 <img src="Assets/Images/ET_Srt_Bnnr.jpg" alt="Description" width="425"/><br>
 <img src="Assets/Images/ET_Qt_Bnnr.jpg" alt="Description" width="425"/>
 
-## Tabel on Contents
+## Tabel of Contents
 
-- [SQL_Employee_Tracker ](#sql_employee_tracker---)<br>
+- [SQL Employee Tracker](#sql-employee-tracker)<br>
 - [Description](#description)<br>
-- [Tabel on Contents](#tabel-on-contents)<br>
+- [Tabel of Contents](#tabel-of-contents)<br>
 - [User Story](#user-story)<br>
 - [Acceptance Criteria](#acceptance-criteria)<br>
-- [Installation](#installation)<br>
-- [Usage](#usage)<br>
 - [License](#license)<br>
 - [Contributing](#contributing)<br>
 - [Tests](#tests)<br>
@@ -64,26 +65,6 @@ This applictaion uses:
 
 **WHEN** I choose to update an employee role <br>
 **THEN** I am prompted to select an employee to update and their new role and this information is updated in the database
-
-## Installation
-
-1. Clone reposityory from GitHub
-2. In the index.js file, on line 148, reaname "READMEtest.md" to "README.md"
-3. Open an integrated terminal for the "index.js" file
-4. Run "npm i" command to install all dependencies or devDependencies from the package. json file
-5. Run "node index.js" to begin running Js file
-
-## Usage
-
-1. Verify installation steps have been completed
-2. Read promps carefully, and answer each thuroughly, pressing Enter after answering each prompt
-3. Once all promps have been answered a "README.md" file will be generated
-4. Copy/Paste new "README.md" file into your project
-
-- Here is the code used in the generateMarkdown.js file to generate License Badges
-
-generateMarkdown.js function for License Badges =
-[function licenseBadge(data)](https://github.com/TheOarsman/README-Generator/blob/3eca79a8bfa63ae587d0ee5f459b5adc3a14d5e2/utils/generateMarkdown.js#L2-L24)
 
 ## License
 
