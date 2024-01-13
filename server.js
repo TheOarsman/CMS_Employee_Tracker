@@ -431,6 +431,7 @@ async function listOfEmployeeNames() {
 function quitProgram() {
   const stopApplication = () => {
     console.log("So long and thanks for all the fish!!");
+    console.log();
     process.exit(0);
   };
 
