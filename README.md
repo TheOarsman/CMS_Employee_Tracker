@@ -99,10 +99,12 @@ None currently
 
 ## Questions/Contact
 
-Developer: Heinz Ulrich V
+**Developer:** Heinz Ulrich V
 
-GitHub: [TheOarsman](https://www.github.com/TheOarsman)
+[![Gmail](assets/images/GMAIL.png)](mailto:heinzulrichv@gmail.com)<br>
 
-LinkedIn: [Heinz Ulrich V](https://www.linkedin.com/in/heinz-ulrich-v-3a3486a0/)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://www.github.com/TheOarsman)<br>
 
-E-Mail: <heinzulrichv@gmail.com>
+[![YouTube](assets/images/YouTube.png)](https://www.youtube.com/@theoarsman4581)<br>
+
+[![LinkedIn](assets/images/LinkedIn.png)](https://www.linkedin.com/in/heinz-ulrich-v-3a3486a0/)
