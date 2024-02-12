@@ -101,10 +101,10 @@ None currently
 
 **Developer:** Heinz Ulrich V
 
-[![Gmail](assets/images/GMAIL.png)](mailto:heinzulrichv@gmail.com)<br>
+[![Gmail](Assets/Images/GMAIL.png)](mailto:heinzulrichv@gmail.com)<br>
 
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://www.github.com/TheOarsman)<br>
 
-[![YouTube](assets/images/YouTube.png)](https://www.youtube.com/@theoarsman4581)<br>
+[![YouTube](Assets/Images/YouTube.png)](https://www.youtube.com/@theoarsman4581)<br>
 
-[![LinkedIn](assets/images/LinkedIn.png)](https://www.linkedin.com/in/heinz-ulrich-v-3a3486a0/)
+[![LinkedIn](Assets/Images/LinkedIn.png)](https://www.linkedin.com/in/heinz-ulrich-v-3a3486a0/)
